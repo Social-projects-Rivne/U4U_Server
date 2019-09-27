@@ -3,7 +3,7 @@ var router = express.Router();
 
 // controllers
 const {getAllRegions, getAllDistricts, getAllPlaces} = require('../controllers/getAllMap');
-const {getRegionById, getDistrictById, getPlaceById} = require('../controllers/getMapById');
+const {getRegionById, getDistrictById, getPlaceById, getAllDistrictsByIdRegion, getRegionByIdAndDistrictById, getRegionByIdAndDistrictByIdPlaces, getRegionByIdDistrictByIdPlaceById} = require('../controllers/getMapById');
 
 router.get('/', (req, res) => {
   res.status(200).send( 
@@ -25,5 +25,10 @@ router.get('/regions/districts/places', getAllPlaces);
 router.get('/regions/:id', getRegionById);
 router.get('/regions/districts/:id', getDistrictById);
 router.get('/regions/districts/places/:id', getPlaceById);
+
+router.get('/regions/:id/districts', getAllDistrictsByIdRegion);
+router.get('/regions/:id/districts/:id2', getRegionByIdAndDistrictById);
+router.get('/regions/:id/districts/:id2/places', getRegionByIdAndDistrictByIdPlaces);
+router.get('/regions/:id/districts/:id2/places/:id3', getRegionByIdDistrictByIdPlaceById);
 
 module.exports = router;
