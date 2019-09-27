@@ -13,7 +13,11 @@ router.get('/', (req, res) => {
       {places: '/regions/districts/places'},
       {regionById: '/regions/:id'},
       {district: '/regions/districts/:id'},
-      {place: '/regions/districts/places/:id'}
+      {place: '/regions/districts/places/:id'},
+      {allDistrictsInRegionById: '/regions/:id/districts'},
+      {districtByIdInRegionById: '/regions/:id/districts/:id2'},
+      {allPlacesInDistrictByIdAndRegionById: '/regions/:id/districts/:id2/places'},
+      {RegionByIdDistrictByIdPlaceById: '/regions/:id/districts/:id2/places/:id3'}
     ]
   );
 });
