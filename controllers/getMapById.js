@@ -5,7 +5,7 @@ exports.getRegionById = (req, res) => {
     .then((region) => {
         res.status(200).send(region);
     })
-    .catch((err) => {
+    .catch(() => {
         res.status(404).send({message: 'Not Found'});
     })
 };
@@ -16,7 +16,7 @@ exports.getDistrictById = (req, res) => {
     .then((district) => {
         res.status(200).send(district);
     })
-    .catch((err) => {
+    .catch(() => {
         res.status(404).send({message: 'Not Found'});
     })
 };
@@ -27,7 +27,7 @@ exports.getPlaceById = (req, res) => {
     .then((place) => {
         res.status(200).send(place);
     })
-    .catch((err) => {
+    .catch(() => {
         res.status(404).send({message: 'Not Found'});
     })
 };
@@ -38,46 +38,32 @@ exports.getAllDistrictsByIdRegion = (req, res) => {
     .then((districts) => {
         res.status(200).send(districts);
     })
-    .catch((err) => {
+    .catch(() => {
         res.status(404).send({message: 'Not Found'});
     })
 }
 exports.getRegionByIdAndDistrictById = (req, res) => {
   const id = req.params.id;
   const id2 = req.params.id2;
-  const regions = require('../models_mongo/region.model');
   const districts = require('../models_mongo/districts.model');
-  regions.findById(id)
-  .then(() => {
-    districts.findById(id2)
+
+    districts.find({_id: id2, regionId: id})
     .then((district) => {
-      console.log(district);
-      res.status(200).send(district);
+        res.status(200).send(district);
     })
     .catch(() => {
-      res.status(404).send({message: 'Not Found'});
+        res.status(404).send({message: 'Not Found'});
     })
-  })
-  .catch(() => {
-    res.status(404).send({message: 'Not Found'});
-  })
 };
 exports.getRegionByIdAndDistrictByIdPlaces = (req, res) => {
   const id = req.params.id;
   const id2 = req.params.id2;
 
-  const districts = require('../models_mongo/districts.model');
   const places = require('../models_mongo/places.model');
 
-    places.find({districtId: id2})
+    places.find({regionId: id, districtId: id2})
     .then((places) => {
-        districts.find({regionId: id})
-        .then(() => {
-            res.status(200).send(places);
-        })
-        .catch(() => {
-            res.status(404).send({message: 'Not Found'});
-        })
+        res.status(200).send(places);
     })
     .catch(() => {
         res.status(404).send({message: 'Not Found'});
@@ -88,25 +74,11 @@ exports.getRegionByIdDistrictByIdPlaceById = (req, res) => {
   const id2 = req.params.id2;
   const id3 = req.params.id3;
 
-  const regions = require('../models_mongo/region.model');
-  const districts = require('../models_mongo/districts.model');
   const places = require('../models_mongo/places.model');
 
-  places.find({_id: id3})
-    .then((places) => {
-        districts.find({regionId: id2})
-        .then(() => {
-            regions.find({_id: id})
-            .then(() => {
-              res.status(200).send(places);
-            })
-            .catch(() => {
-              res.status(404).send({message: 'Not Found'});
-            })
-        })
-        .catch(() => {
-            res.status(404).send({message: 'Not Found'});
-        })
+    places.find({_id: id3, districtId: id2, regionId: id})
+    .then((place) => {
+        res.status(200).send(place);
     })
     .catch(() => {
         res.status(404).send({message: 'Not Found'});
