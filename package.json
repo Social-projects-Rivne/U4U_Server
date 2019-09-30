@@ -1,0 +1,44 @@
+{
+  "name": "u4u-backend",
+  "version": "0.1.0",
+  "description": "Backend server for U4U project",
+  "main": "build/core",
+  "scripts": {
+    "start:old": "node -r esm src/core.mjs",
+    "debug:old": "nodemon -e js index.js",
+    "build": "rollup -c",
+    "watch": "rollup -c -w",
+    "debug": "nodemon dist/core",
+    "start": "npm run build && npm run debug"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Social-projects-Rivne/U4U_Server.git"
+  },
+  "author": "WebUI 2019 Team",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Social-projects-Rivne/U4U_Server/issues"
+  },
+  "homepage": "https://github.com/Social-projects-Rivne/U4U_Server#readme",
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cookie-parser": "^1.4.4",
+    "debug": "^4.1.1",
+    "dotenv": "^8.1.0",
+    "esm": "^3.2.25",
+    "express": "^4.17.1",
+    "mongoose": "^5.7.1",
+    "morgan": "^1.9.1",
+    "pg": "^7.12.1",
+    "sequelize": "^5.19.1"
+  },
+  "devDependencies": {
+    "@types/debug": "^4.1.5",
+    "@types/express": "^4.17.1",
+    "@types/mongoose": "^5.5.18",
+    "@types/sequelize": "^4.28.4",
+    "nodemon": "^1.19.3",
+    "rollup": "^1.22.0"
+  }
+}
