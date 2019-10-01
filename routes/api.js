@@ -2,16 +2,26 @@ const express = require('express');
 
 const router = express.Router();
 
-// controllers
-const { getAllRegions, getAllDistricts, getAllPlaces } = require('../controllers/getAllMap');
+// require controllers "getAllMap"
+const { 
+  getAllRegions,
+  getAllDistricts,
+  getAllPlaces 
+} = require('../controllers/getAllMap');
 
+// require contollers "getMapById"
 const {
-  getRegionById, getDistrictById, getPlaceById, getAllDistrictsByIdRegion,
-  getRegionByIdAndDistrictById, getRegionByIdAndDistrictByIdPlaces,
+  getRegionById,
+  getDistrictById,
+  getPlaceById,
+  getAllDistrictsByIdRegion,
+  getRegionByIdAndDistrictById,
+  getRegionByIdAndDistrictByIdPlaces,
   getRegionByIdDistrictByIdPlaceById,
+  getAllPlacesByRegionId,
 } = require('../controllers/getMapById');
 
-
+// Basic "/api" route
 router.get('/', (req, res) => {
   res.status(200).send(
     [
@@ -25,10 +35,12 @@ router.get('/', (req, res) => {
       { districtByIdInRegionById: '/regions/:id/districts/:id2' },
       { allPlacesInDistrictByIdAndRegionById: '/regions/:id/districts/:id2/places' },
       { RegionByIdDistrictByIdPlaceById: '/regions/:id/districts/:id2/places/:id3' },
+      { AllPlacesByRegionId: '/regions/:RegionId/places' },
     ],
   );
 });
 
+// Routers with controllers
 router.get('/regions', getAllRegions);
 router.get('/regions/districts', getAllDistricts);
 router.get('/regions/districts/places', getAllPlaces);
@@ -41,5 +53,7 @@ router.get('/regions/:RegionId/districts', getAllDistrictsByIdRegion);
 router.get('/regions/:RegionId/districts/:DistrictId', getRegionByIdAndDistrictById);
 router.get('/regions/:RegionId/districts/:DistrictId/places', getRegionByIdAndDistrictByIdPlaces);
 router.get('/regions/:RegionId/districts/:DistrictId/places/:PlaceId', getRegionByIdDistrictByIdPlaceById);
+
+router.get('/regions/:RegionId/places', getAllPlacesByRegionId);
 
 module.exports = router;

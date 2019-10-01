@@ -43,8 +43,7 @@ exports.getAllDistrictsByIdRegion = (req, res) => {
     });
 };
 exports.getRegionByIdAndDistrictById = (req, res) => {
-  const { DistrictId } = req.params;
-  const { RegionId } = req.params;
+  const { DistrictId, RegionId } = req.params;
   district.find({ _id: DistrictId, regionId: RegionId })
     .then((data) => {
       res.status(200).send(data);
@@ -54,9 +53,7 @@ exports.getRegionByIdAndDistrictById = (req, res) => {
     });
 };
 exports.getRegionByIdAndDistrictByIdPlaces = (req, res) => {
-  const { RegionId } = req.params;
-  const { DistrictId } = req.params;
-
+  const { RegionId, DistrictId } = req.params;
   place.find({ regionId: RegionId, districtId: DistrictId })
     .then((data) => {
       res.status(200).send(data);
@@ -66,13 +63,20 @@ exports.getRegionByIdAndDistrictByIdPlaces = (req, res) => {
     });
 };
 exports.getRegionByIdDistrictByIdPlaceById = (req, res) => {
-  const { RegionId } = req.params;
-  const { DistrictId } = req.params;
-  const { PlaceId } = req.params;
-
+  const { RegionId, DistrictId, PlaceId } = req.params;
   place.find({ _id: PlaceId, districtId: DistrictId, regionId: RegionId })
     .then((data) => {
       res.status(200).send(data);
+    })
+    .catch(() => {
+      res.status(404).send({ message: 'Not Found' });
+    });
+};
+exports.getAllPlacesByRegionId = (req, res) => {
+  const { RegionId } = req.params;
+  place.find({ regionId: RegionId })
+    .then((data) => {
+      res.send(data);
     })
     .catch(() => {
       res.status(404).send({ message: 'Not Found' });

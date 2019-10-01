@@ -4,13 +4,15 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
-const mongoose = require('mongoose');
 
+// Read .env files
 require('dotenv').config();
 
-const { MongoConfig } = require('./config/mongoDataBase');
-// const SqlBase = require('./config/sqlDataBase');
+// Mongo Connect
+require('./config/mongoDataBase');
 
+// Postgres connect Include this config when db Postgre will be hosted
+// require('./config/sqlDataBase');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
@@ -42,24 +44,5 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
-
-// Mongo Connect
-mongoose.connect(MongoConfig.uri, { useNewUrlParser: true, useUnifiedTopology: true })
-  .then(() => {
-    console.log('Connected to Mongo DB');
-  })
-  .catch((err) => {
-    throw new Error(`Error to connect to mongo, ${err}`);
-  });
-
-
-// SQL connect
-// SqlBase.authenticate()
-// .then(() => {
-//   console.log('SQL Connected');
-// })
-// .catch((err) => {
-//   console.log('Error SQL connection', err);
-// })
 
 module.exports = app;
