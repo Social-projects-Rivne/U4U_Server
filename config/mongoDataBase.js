@@ -1,3 +1,3 @@
 exports.MongoConfig = {
-    uri: process.env.mongoUri
+  uri: process.env.mongoUri,
 };
