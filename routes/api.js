@@ -3,10 +3,10 @@ const express = require('express');
 const router = express.Router();
 
 // require controllers "getAllMap"
-const { 
+const {
   getAllRegions,
   getAllDistricts,
-  getAllPlaces 
+  getAllPlaces,
 } = require('../controllers/getAllMap');
 
 // require contollers "getMapById"
