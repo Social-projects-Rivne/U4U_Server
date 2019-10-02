@@ -4,11 +4,21 @@ const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+
+require('dotenv').config();
+
+const {MongoConfig} = require('./config/mongoDataBase');
+const SqlBase = require('./config/sqlDataBase');
+
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 
 const app = express();
+
+app.set('views', path.join(__dirname, 'views'));
+app.set('view engine', 'jade');
 
 app.use(logger('dev'));
 app.use(express.json());
@@ -25,7 +35,7 @@ app.use((req, res, next) => {
 });
 
 // error handler
-app.use((err, req, res) => {
+app.use((err, req, res, next) => {
   // set locals, only providing error in development
   res.locals.message = err.message;
   res.locals.error = req.app.get('env') === 'development' ? err : {};
@@ -35,5 +45,23 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
+
+// Mongo Connect
+mongoose.connect(MongoConfig.uri, {useNewUrlParser: true, useUnifiedTopology: true })
+const db = mongoose.connection;
+db.on('error', console.error.bind(console, 'connection error:'));
+db.once('open', () => {
+  console.log('MongoDB Connected');
+});
+
+
+// SQL
+SqlBase.authenticate()
+.then(() => {
+  console.log('SQL Connected');
+})
+.catch((err) => {
+  console.log('Error SQL connection', err);
+})
 
 module.exports = app;
