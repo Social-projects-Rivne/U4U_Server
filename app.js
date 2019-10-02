@@ -5,15 +5,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-// Read .env files
-require('dotenv').config();
-
-// Mongo Connect
-require('./config/mongoDataBase');
-
-// Postgres connect Include this config when db Postgre will be hosted
-// require('./config/sqlDataBase');
-
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 
