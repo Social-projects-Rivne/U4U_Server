@@ -1,31 +1,30 @@
-const regions = require('../models/region.model');
-const districts = require('../models/districts.model');
-const places = require('../models/places.model');
-
 exports.getAllRegions = (req, res) => {
-  regions.find({})
-    .then((data) => {
-      res.status(200).send(data);
+    const regions = require('../models_mongo/region.model');
+    regions.find({})
+    .then((regions) => {
+        res.status(200).send(regions);
     })
-    .catch(() => {
-      res.status(404).send({ message: 'Not Found' });
-    });
+    .catch((err) => {
+        // handle error
+    })
 };
 exports.getAllDistricts = (req, res) => {
-  districts.find({})
-    .then((data) => {
-      res.status(200).send(data);
+    const districts = require('../models_mongo/districts.model');
+    districts.find({})
+    .then((districts) => {
+        res.status(200).send(districts);
     })
-    .catch(() => {
-      res.status(404).send({ message: 'Not Found' });
-    });
-};
+    .catch((err) => {
+        // handle error
+    })
+}
 exports.getAllPlaces = (req, res) => {
-  places.find({})
-    .then((data) => {
-      res.status(200).send(data);
+    const places = require('../models_mongo/places.model');
+    places.find({})
+    .then((places) => {
+        res.status(200).send(places);
     })
-    .catch(() => {
-      res.status(404).send({ message: 'Not Found' });
-    });
-};
+    .catch((err) => {
+        // handle Error
+    })
+}
