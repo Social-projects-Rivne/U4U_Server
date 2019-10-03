@@ -32,23 +32,8 @@ mongoose.connect(process.env.mongoUri, { useNewUrlParser: true, useUnifiedTopolo
     console.log('Connected to Mongo DB');
   })
   .then(() => {
-    console.log('This place is for Postgres connection');
-    // const Sequelize = require('sequelize');
-    // require('dotenv').config();
-    
-    // const db = new Sequelize(process.env.sqlDataBase, 'postgres', process.env.sqlPassword, {
-    //   dialect: 'postgres',
-    //   host: process.env.host,
-    //   port: process.env.sqlPort,
-    //   logging: false,
-    // });
-    // db.authenticate()
-    //   .then(() => {
-    //     console.log('SQL Connected');
-    //   })
-    //   .catch((err) => {
-    //     throw new Error('Error SQL connection', err);
-    //   });
+    //console.log('This place is for Postgres connection');
+    require('../config/postgre');
   })
   .then(() => {
     server.listen(port);
