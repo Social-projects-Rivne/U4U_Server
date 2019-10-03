@@ -37,10 +37,4 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
-require('./models/user.model');
-require('./models/moderator.model');
-require('./models/ban.model');
-require('./models/business.model');
-require('./models/token.model');
-
 module.exports = app;

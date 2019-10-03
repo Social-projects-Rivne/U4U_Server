@@ -36,3 +36,5 @@ const Token = sequelize.define('tokens', {
 Token.associate = function(models){
   Token.belongsTo(models.User)
 };
+
+module.exports = Token;

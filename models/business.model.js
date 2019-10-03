@@ -31,3 +31,5 @@ const Business = sequelize.define('business', {
 Business.associate = function(models){
   Business.belongsTo(models.User)
 };
+
+module.exports = Business;
