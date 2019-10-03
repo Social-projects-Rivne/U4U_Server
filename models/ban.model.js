@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/postgre');
 
-const BannedUser = sequelize.define('banned_users', {
+const Ban = sequelize.define('bans', {
   id: {
     type: Sequelize.INTEGER,
     primaryKey: true,
@@ -47,11 +47,10 @@ const BannedUser = sequelize.define('banned_users', {
   timestamps: false,
 });
 
+/**
+ * Relation Bans -> Users
+ */
 
-// BannedUser.findAll({row:true})
-//   .then((bUsers) => {
-//     console.log(bUsers);
-//   })
-//   .catch((err) => {
-//     console.log(err);
-//   });
+Ban.associate = function(models){
+  Ban.belongsTo(models.User)
+};

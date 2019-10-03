@@ -64,3 +64,27 @@ const User = sequelize.define('users', {
 }, {
   timestamps: false,
 });
+
+/**
+ * Relation Users -> Bans
+ */
+
+User.associate = function(models){
+  User.hasOne(models.Ban)
+};
+
+/**
+ * Relation Users -> Business
+ */
+
+User.associate = function(models){
+  User.hasOne(models.Business)
+};
+
+/**
+ * Relation Users -> Tokens
+ */
+
+User.associate = function(models){
+  User.hasOne(models.Token)
+};

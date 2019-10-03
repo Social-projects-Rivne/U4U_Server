@@ -39,6 +39,8 @@ app.use((err, req, res) => {
 
 require('./models/user.model');
 require('./models/moderator.model');
-require('./models/bannedUser.model');
+require('./models/ban.model');
+require('./models/business.model');
+require('./models/token.model');
 
 module.exports = app;
