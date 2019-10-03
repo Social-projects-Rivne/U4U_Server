@@ -37,5 +37,8 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
+require('./models/user.model');
+require('./models/moderator.model');
+require('./models/bannedUser.model');
 
 module.exports = app;
