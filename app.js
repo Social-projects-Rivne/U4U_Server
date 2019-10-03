@@ -37,7 +37,5 @@ app.use((err, req, res) => {
   res.render('error');
 });
 
-require('./models/user.model');
-
 
 module.exports = app;
