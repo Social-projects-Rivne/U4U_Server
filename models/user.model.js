@@ -1,7 +1,6 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/postgre');
 
-module.exports
 const User = sequelize.define('users', {
   id: {
     type: Sequelize.INTEGER,
@@ -70,24 +69,24 @@ const User = sequelize.define('users', {
  * Relation Users -> Bans
  */
 
-User.associate = function(models){
-  User.hasOne(models.Ban)
+User.associate = (models) => {
+  User.hasOne(models.Ban);
 };
 
 /**
  * Relation Users -> Business
  */
 
-User.associate = function(models){
-  User.hasOne(models.Business)
+User.associate = (models) => {
+  User.hasOne(models.Business);
 };
 
 /**
  * Relation Users -> Tokens
  */
 
-User.associate = function(models){
-  User.hasOne(models.Token)
+User.associate = (models) => {
+  User.hasOne(models.Token);
 };
 
 module.exports = User;

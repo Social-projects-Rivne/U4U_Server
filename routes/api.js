@@ -21,6 +21,8 @@ const {
   getAllPlacesByRegionId,
 } = require('../controllers/getMapById');
 
+const authController = require('../controllers/authController');
+
 // Basic "/api" route
 router.get('/', (req, res) => {
   res.status(200).send(
@@ -55,5 +57,6 @@ router.get('/regions/:RegionId/districts/:DistrictId/places', getRegionByIdAndDi
 router.get('/regions/:RegionId/districts/:DistrictId/places/:PlaceId', getRegionByIdDistrictByIdPlaceById);
 
 router.get('/regions/:RegionId/places', getAllPlacesByRegionId);
+
 
 module.exports = router;

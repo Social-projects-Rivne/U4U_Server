@@ -1,10 +1,10 @@
 const Sequelize = require('sequelize');
 require('dotenv').config();
 
-const sequelize = new Sequelize(process.env.sqlDataBase, 'postgres', process.env.sqlPassword, {
+const sequelize = new Sequelize(process.env.DB_SQL_NAME, 'postgres', process.env.DB_SQL_PASSWORD, {
   dialect: 'postgres',
-  host: process.env.host,
-  port: process.env.sqlPort,
+  host: process.env.DB_SQL_HOST,
+  port: process.env.DB_SQL_PORT,
   logging: false,
 });
 sequelize.authenticate()

@@ -1,3 +1,4 @@
+
 const Sequelize = require('sequelize');
 const sequelize = require('../config/postgre');
 
@@ -33,8 +34,8 @@ const Token = sequelize.define('tokens', {
  * Relation Tokens -> Users
  */
 
-Token.associate = function(models){
-  Token.belongsTo(models.User)
+Token.associate = (models) => {
+  Token.belongsTo(models.User);
 };
 
 module.exports = Token;

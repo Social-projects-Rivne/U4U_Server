@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "start": "nodemon ./bin/www",
+    "debug": "nodemon --inspect ./bin/www",
     "lint": "eslint ."
   },
   "dependencies": {
@@ -18,7 +19,8 @@
     "morgan": "~1.9.1",
     "nodemon": "^1.19.2",
     "pg": "^7.12.1",
-    "sequelize": "^5.19.0"
+    "sequelize": "^5.19.0",
+    "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
     "acorn": "^7.1.0",
