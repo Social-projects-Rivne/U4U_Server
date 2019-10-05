@@ -5,12 +5,18 @@ const { jwtConf } = require('../config/config');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
+  console.log(email, password, req.body); 
+  
+  if(!email || !password) {
+    return res.status(400).json({ err: 'email and password are required fields' })
+  }
 
   try {
-    const { dataValues: user } = await userModel.findOne({ where: { email, password } });
+    const user = await userModel.findOne({ where: { email, password } });
+    if(!user) throw '';
 
     const payload = {
-      userId: user.id,
+      userId: user.dataValues.id,
     };
 
     // create Tokens
@@ -23,10 +29,10 @@ exports.login = async (req, res) => {
       tokenModel.update({
         access_token: accessToken,
         refresh_token: refreshToken,
-      }, { where: { user_id: user.id } });
+      }, { where: { user_id: user.dataValues.id } });
     } else {
       await tokenModel.create({
-        user_id: user.id,
+        user_id: user.dataValues.id,
         access_token: accessToken,
         refresh_token: refreshToken,
       });
