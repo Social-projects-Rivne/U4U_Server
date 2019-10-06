@@ -14,7 +14,7 @@ module.exports = async (req, res, next) => {
   try {
     const decode = jwt.verify(token, jwtConf.secret);
     const dbToken = await tokenModel.findOne({ where: { user_id: decode.userId } });
-    if (token !== dbToken) throw 'Token dose not match';
+    if (token !== dbToken.dataValues.access_token) throw 'Token dose not match';
 
     req.userId = decode.userId;
     next();
