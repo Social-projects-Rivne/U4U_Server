@@ -6,7 +6,7 @@ const { jwtConf } = require('../config/config');
 exports.login = async (req, res) => {
   const { email, password } = req.body;
   console.log(email, password, req.body); 
-  
+
   if(!email || !password) {
     return res.status(400).json({ err: 'email and password are required fields' })
   }
@@ -52,7 +52,7 @@ exports.login = async (req, res) => {
 
 exports.refreshToken = async (req, res) => {
   if (!req.body.refreshToken) {
-    return res.status(404).json({ err: 'No refresh token' });
+    return res.status(400).json({ err: 'No refresh token' });
   }
   const { refreshToken } = req.body;
 
@@ -82,10 +82,23 @@ exports.refreshToken = async (req, res) => {
     // send tokens to client
     res.status(200).json({
       accessToken,
-      refreshToke: newRefreshToken,
+      refreshToken: newRefreshToken,
       expiresIn: jwtConf.expiresIn,
     });
   } catch (err) {
     res.status(401).json({ err: err.message });
   }
+};
+
+exports.checkToken = async (req, res) => {
+  const { token } = req.body;
+  if(!token) return res.status(401).send();
+
+  try {
+    jwt.verify(token, jwtConf.secret);
+  } catch(err) {
+    return res.status(401).json({err});
+  }
+
+  res.status(200).send();
 };
