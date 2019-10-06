@@ -9,5 +9,7 @@ router.put('/refresh-token', authController.refreshToken);
 
 router.post('/check-auth', authController.checkToken);
 
+router.post('/log-out', authController.logOut);
+
 
 module.exports = router;

@@ -5,15 +5,15 @@ const { jwtConf } = require('../config/config');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password, req.body); 
+  console.log(email, password, req.body);
 
-  if(!email || !password) {
-    return res.status(400).json({ err: 'email and password are required fields' })
+  if (!email || !password) {
+    return res.status(400).json({ err: 'email and password are required fields' });
   }
 
   try {
     const user = await userModel.findOne({ where: { email, password } });
-    if(!user) throw '';
+    if (!user) throw '';
 
     const payload = {
       userId: user.dataValues.id,
@@ -92,13 +92,28 @@ exports.refreshToken = async (req, res) => {
 
 exports.checkToken = async (req, res) => {
   const { token } = req.body;
-  if(!token) return res.status(401).send();
+  if (!token) return res.status(401).send();
 
   try {
     jwt.verify(token, jwtConf.secret);
-  } catch(err) {
-    return res.status(401).json({err});
+  } catch (err) {
+    return res.status(401).json({ err });
   }
 
   res.status(200).send();
+};
+
+exports.logOut = async (req, res) => {
+  const { token } = req.body;
+  if (!token) throw 'Token is required';
+
+  try {
+    const { userId } = jwt.verify(token, jwtConf.secret);
+    if (!userId) throw 'invalid token';
+
+    await tokenModel.destroy({ where: { user_id: userId } });
+    res.status(200).send();
+  } catch (err) {
+    res.status(400).json({ err });
+  }
 };
