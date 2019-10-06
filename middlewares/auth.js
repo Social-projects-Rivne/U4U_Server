@@ -1,8 +1,9 @@
 const jwt = require('jsonwebtoken');
 const { jwtConf } = require('../config/config');
+const tokenModel = require('../models/token.model');
 
 // auth middleware which checks jwt token
-module.exports = (req, res, next) => {
+module.exports = async (req, res, next) => {
   let token;
   if (req.header('Authorization')) {
     token = req.header('Authorization').split(' ')[1];
@@ -12,6 +13,9 @@ module.exports = (req, res, next) => {
 
   try {
     const decode = jwt.verify(token, jwtConf.secret);
+    const dbToken = await tokenModel.findOne({ where: { user_id: decode.userId } });
+    if (token !== dbToken) throw 'Token dose not match';
+
     req.userId = decode.userId;
     next();
   } catch (err) {
