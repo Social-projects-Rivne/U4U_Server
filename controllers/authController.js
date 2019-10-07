@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
+const {  validationResult } = require('express-validator');
 const userModel = require('../models/user.model');
 const tokenModel = require('../models/token.model');
 const { jwtConf } = require('../config/config');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-  console.log(email, password, req.body);
 
   if (!email || !password) {
     return res.status(400).json({ err: 'email and password are required fields' });
