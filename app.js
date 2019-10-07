@@ -8,19 +8,23 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+const authRoutes = require('./routes/auth');
+
+const auth = require('./middlewares/auth');
 
 const app = express();
 
 app.use(logger('dev'));
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-app.use('/', indexRouter);
-app.use('/api', apiRouter);
+// app.use('/', indexRouter);
+app.use('/api', authRoutes);
+app.use('/api', auth, apiRouter);
 
 app.use((req, res, next) => {
   next(createError(404));

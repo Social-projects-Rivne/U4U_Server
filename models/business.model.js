@@ -20,7 +20,7 @@ const Business = sequelize.define('business', {
     },
   },
 },
-  {
+{
   timestamps: false,
 });
 
@@ -28,8 +28,8 @@ const Business = sequelize.define('business', {
  * Relation Bans -> Users
  */
 
-Business.associate = function(models){
-  Business.belongsTo(models.User)
+Business.associate = (models) => {
+  Business.belongsTo(models.User);
 };
 
 module.exports = Business;
