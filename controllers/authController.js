@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {  validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 const userModel = require('../models/user.model');
 const tokenModel = require('../models/token.model');
 const { jwtConf } = require('../config/config');
@@ -51,9 +51,6 @@ exports.login = async (req, res) => {
 };
 
 exports.refreshToken = async (req, res) => {
-  if (!req.body.refreshToken) {
-    return res.status(400).json({ err: 'No refresh token' });
-  }
   const { refreshToken } = req.body;
 
   try {
@@ -91,9 +88,6 @@ exports.refreshToken = async (req, res) => {
 };
 
 exports.checkToken = async (req, res) => {
-  const { token } = req.body;
-  if (!token) return res.status(401).send();
-
   try {
     jwt.verify(token, jwtConf.secret);
   } catch (err) {
@@ -104,9 +98,6 @@ exports.checkToken = async (req, res) => {
 };
 
 exports.logOut = async (req, res) => {
-  const { token } = req.body;
-  if (!token) throw 'Token is required';
-
   try {
     const { userId } = jwt.verify(token, jwtConf.secret);
     if (!userId) throw 'invalid token';
@@ -115,5 +106,14 @@ exports.logOut = async (req, res) => {
     res.status(200).send();
   } catch (err) {
     res.status(400).json({ err });
+  }
+};
+
+exports.register = async (req, res) => {
+  try {
+    await userModel.create({ ...req.body, created_at: Date.now() });
+    res.status(201).json({ message: 'user has been created successful' });
+  } catch (e) {
+    res.status(500).send();
   }
 };

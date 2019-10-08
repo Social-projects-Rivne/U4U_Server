@@ -1,31 +1,18 @@
 const express = require('express');
-const { check } = require('express-validator');
 const valid = require('../middlewares/express-validation');
 const authController = require('../controllers/authController');
-
+const { auth } = require('../middlewares/route-validator');
 const router = express.Router();
 
-router.post('/login', [
-  check('email', 'Email is invalid')
-    .not().isEmpty()
-    .isEmail()
-    .normalizeEmail(),
-  check('password', 'Password cannot be empty string')
-    .not().isEmpty(),
-], valid, authController.login);
 
-router.put('/refresh-token', [
-  check('refreshToken')
-    .not().isEmpty()
-    .isString(),
-], valid, authController.refreshToken);
+router.post('/login', valid(auth.login), authController.login);
 
-router.post('/check-auth', [
-  check('token')
-    .not().isEmpty()
-    .isString()], valid, authController.checkToken);
+router.post('/register', valid(auth.register), authController.register);
 
-router.post('/log-out', authController.logOut);
+router.put('/refresh-token', valid(auth.refreshToken), authController.refreshToken);
 
+router.post('/check-auth', valid(auth.checkAuth), authController.checkToken);
+
+router.post('/log-out', valid(auth.logOut), authController.logOut);
 
 module.exports = router;
