@@ -14,4 +14,10 @@ module.exports = {
     refreshSecret: 'veryRefreshSecret',
     refreshExpiresIn: 36000,
   },
+  adminJwtConf: {
+    secret: 'adminPanelVerySecretString',
+    expiresIn: 12000,
+    refreshSecret: 'adminPanelVeryRefreshSecret',
+    refreshExpiresIn: 36000,
+  },
 };
