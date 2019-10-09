@@ -19,6 +19,6 @@ module.exports = async (req, res, next) => {
     req.userId = decode.userId;
     next();
   } catch (err) {
-    res.status(401).json({ err: err.message });
+    res.status(401).json({ err: err.message ? err.message : err });
   }
 };

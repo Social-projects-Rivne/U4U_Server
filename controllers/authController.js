@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const {  validationResult } = require('express-validator');
+const { validationResult } = require('express-validator');
 const userModel = require('../models/user.model');
 const tokenModel = require('../models/token.model');
 const { jwtConf } = require('../config/config');
@@ -7,13 +7,13 @@ const { jwtConf } = require('../config/config');
 exports.login = async (req, res) => {
   const { email, password } = req.body;
 
-  if(!email || !password) {
-    return res.status(400).json({ err: 'email and password are required fields' })
+  if (!email || !password) {
+    return res.status(400).json({ err: 'email and password are required fields' });
   }
 
   try {
     const user = await userModel.findOne({ where: { email, password } });
-    if(!user) throw '';
+    if (!user) throw '';
 
     const payload = {
       userId: user.dataValues.id,
@@ -51,9 +51,6 @@ exports.login = async (req, res) => {
 };
 
 exports.refreshToken = async (req, res) => {
-  if (!req.body.refreshToken) {
-    return res.status(400).json({ err: 'No refresh token' });
-  }
   const { refreshToken } = req.body;
 
   try {
@@ -91,14 +88,32 @@ exports.refreshToken = async (req, res) => {
 };
 
 exports.checkToken = async (req, res) => {
-  const { token } = req.body;
-  if(!token) return res.status(401).send();
-
   try {
     jwt.verify(token, jwtConf.secret);
-  } catch(err) {
-    return res.status(401).json({err});
+  } catch (err) {
+    return res.status(401).json({ err });
   }
 
   res.status(200).send();
+};
+
+exports.logOut = async (req, res) => {
+  try {
+    const { userId } = jwt.verify(token, jwtConf.secret);
+    if (!userId) throw 'invalid token';
+
+    await tokenModel.destroy({ where: { user_id: userId } });
+    res.status(200).send();
+  } catch (err) {
+    res.status(400).json({ err });
+  }
+};
+
+exports.register = async (req, res) => {
+  try {
+    await userModel.create({ ...req.body, created_at: Date.now() });
+    res.status(201).json({ message: 'user has been created successful' });
+  } catch (e) {
+    res.status(500).send();
+  }
 };

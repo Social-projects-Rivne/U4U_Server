@@ -10,6 +10,7 @@ const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const adminApiRouter = require('./routes/adminApi');
 const authRoutes = require('./routes/auth');
+const validRoutes = require('./routes/validation');
 const adminAuthRoutes = require('./routes/adminAuth');
 
 const auth = require('./middlewares/auth');
@@ -30,7 +31,8 @@ app.use('/admin/api', adminAuth, adminApiRouter);
 
 // app.use('/', indexRouter);
 app.use('/api', authRoutes);
-app.use('/api', auth, apiRouter);
+app.use('/api', apiRouter);
+app.use('/api', validRoutes);
 
 app.use((req, res, next) => {
   next(createError(404));
