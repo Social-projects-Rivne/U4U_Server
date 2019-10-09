@@ -8,9 +8,12 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
+const adminApiRouter = require('./routes/adminApi');
 const authRoutes = require('./routes/auth');
+const adminAuthRoutes = require('./routes/adminAuth');
 
 const auth = require('./middlewares/auth');
+const admin_auth = require('./middlewares/adminAuth');
 
 const app = express();
 
@@ -21,6 +24,9 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
+
+app.use('/admin/', adminAuthRoutes);
+app.use('/admin/api', admin_auth, adminApiRouter);
 
 // app.use('/', indexRouter);
 app.use('/api', authRoutes);
