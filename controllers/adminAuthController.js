@@ -94,3 +94,41 @@ exports.refreshToken = async (req, res) => {
         return res.status(401).json({ errors: [{ param: 'refreshExpiredError', msg: 'Refresh token expired.' }] });
     }
 };
+
+exports.checkToken = async (req, res) => {
+    const clientRT = req.body.accessToken;
+
+    try {
+        jwt.verify(clientRT, jwtConf.secret);
+
+        return res.status(200).json({
+            status: true,
+        });
+    } catch (error) {
+        return res.status(200).json({
+            status: false,
+        });
+    }
+};
+
+exports.logout = async (req, res) => {
+    const clientRT = req.body.accessToken;
+
+    try {
+        jwt.verify(clientRT, jwtConf.secret);
+
+        const decoded = jwt.decode(clientRT);
+        const { userId } = decoded;
+        const getServerRT = await adminTokenModel.findOne({ where: { user_id: userId } });
+
+        if (getServerRT) {
+            await adminTokenModel.destroy({ where: { user_id: userId } });
+        }
+
+        return res.status(200).json({
+            status: true,
+        });
+    } catch (error) {
+        return res.status(401).json({ errors: [{ param: 'accessExpiredError', msg: 'Access token expired.' }] });
+    }
+};
