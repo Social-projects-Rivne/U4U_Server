@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const moderatorModel = require('../models/moderator.model');
 const adminTokenModel = require('../models/adminToken.model');
-const { jwtConf } = require('../config/config');
+const { adminJwtConf } = require('../config/config');
 
 exports.login = async (req, res) => {
     const { email, password } = req.body;
@@ -27,10 +27,10 @@ exports.login = async (req, res) => {
             sub: 'accessToken',
         };
 
-        const refreshToken = jwt.sign(refteshTokenPayload, jwtConf.refreshSecret, 
-            { expiresIn: jwtConf.refreshExpiresIn });
-        const accessToken = jwt.sign(accessTokenPayload, jwtConf.secret, 
-            { expiresIn: jwtConf.expiresIn });
+        const refreshToken = jwt.sign(refteshTokenPayload, adminJwtConf.refreshSecret, 
+            { expiresIn: adminJwtConf.refreshExpiresIn });
+        const accessToken = jwt.sign(accessTokenPayload, adminJwtConf.secret, 
+            { expiresIn: adminJwtConf.expiresIn });
 
         if (await adminTokenModel.findOne({ where: { user_id: user.id } })) {
             await adminTokenModel.update({
@@ -56,7 +56,7 @@ exports.refreshToken = async (req, res) => {
     const clientRT = req.body.refreshToken;
 
     try {
-        jwt.verify(clientRT, jwtConf.refreshSecret);
+        jwt.verify(clientRT, adminJwtConf.refreshSecret);
 
         const decoded = jwt.decode(clientRT);
         const { userId } = decoded;
@@ -74,10 +74,10 @@ exports.refreshToken = async (req, res) => {
                 sub: 'accessToken',
             };
 
-            const newRefreshToken = jwt.sign(refteshTokenPayload, jwtConf.refreshSecret, 
-                { expiresIn: jwtConf.refreshExpiresIn });
-            const newAccessToken = jwt.sign(accessTokenPayload, jwtConf.secret, 
-                { expiresIn: jwtConf.expiresIn });
+            const newRefreshToken = jwt.sign(refteshTokenPayload, adminJwtConf.refreshSecret, 
+                { expiresIn: adminJwtConf.refreshExpiresIn });
+            const newAccessToken = jwt.sign(accessTokenPayload, adminJwtConf.secret, 
+                { expiresIn: adminJwtConf.expiresIn });
 
             await adminTokenModel.update({
                 refresh_token: newRefreshToken,
@@ -92,5 +92,43 @@ exports.refreshToken = async (req, res) => {
         }
     } catch (error) {
         return res.status(401).json({ errors: [{ param: 'refreshExpiredError', msg: 'Refresh token expired.' }] });
+    }
+};
+
+exports.checkToken = async (req, res) => {
+    const clientRT = req.body.accessToken;
+
+    try {
+        jwt.verify(clientRT, adminJwtConf.secret);
+
+        return res.status(200).json({
+            status: true,
+        });
+    } catch (error) {
+        return res.status(200).json({
+            status: false,
+        });
+    }
+};
+
+exports.logout = async (req, res) => {
+    const clientRT = req.body.accessToken;
+
+    try {
+        jwt.verify(clientRT, adminJwtConf.secret);
+
+        const decoded = jwt.decode(clientRT);
+        const { userId } = decoded;
+        const getServerRT = await adminTokenModel.findOne({ where: { user_id: userId } });
+
+        if (getServerRT) {
+            await adminTokenModel.destroy({ where: { user_id: userId } });
+        }
+
+        return res.status(200).json({
+            status: true,
+        });
+    } catch (error) {
+        return res.status(401).json({ errors: [{ param: 'accessExpiredError', msg: 'Access token expired.' }] });
     }
 };

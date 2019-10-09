@@ -1,11 +1,11 @@
 const jwt = require('jsonwebtoken');
-const { jwtConf } = require('../config/config');
+const { adminJwtConf } = require('../config/config');
 
 module.exports = async (req, res, next) => {
   const accessToken = req.header('Authorization');
   if (accessToken) {
     try {
-      jwt.verify(accessToken, jwtConf.secret);
+      jwt.verify(accessToken, adminJwtConf.secret);
       next();
     } catch (error) {
       if (error.name === 'TokenExpiredError')

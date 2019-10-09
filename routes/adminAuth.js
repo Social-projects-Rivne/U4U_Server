@@ -20,4 +20,16 @@ router.post('/refresh-token', [
     .isString(),
 ], valid, adminAuthController.refreshToken);
 
+router.post('/check-token', [
+  check('accessToken')
+    .not().isEmpty()
+    .isString(),
+], valid, adminAuthController.checkToken);
+
+router.post('/logout', [
+  check('accessToken')
+    .not().isEmpty()
+    .isString(),
+], valid, adminAuthController.logout);
+
 module.exports = router;
