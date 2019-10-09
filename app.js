@@ -26,12 +26,12 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-app.use('/admin/', adminAuthRoutes);
+app.use('/admin', adminAuthRoutes);
 app.use('/admin/api', adminAuth, adminApiRouter);
 
 // app.use('/', indexRouter);
 app.use('/api', authRoutes);
-app.use('/api', apiRouter);
+app.use('/api', auth, apiRouter);
 app.use('/api', validRoutes);
 
 app.use((req, res, next) => {
