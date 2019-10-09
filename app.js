@@ -13,7 +13,7 @@ const authRoutes = require('./routes/auth');
 const adminAuthRoutes = require('./routes/adminAuth');
 
 const auth = require('./middlewares/auth');
-const admin_auth = require('./middlewares/adminAuth');
+const adminAuth = require('./middlewares/adminAuth');
 
 const app = express();
 
@@ -26,7 +26,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
 app.use('/admin/', adminAuthRoutes);
-app.use('/admin/api', admin_auth, adminApiRouter);
+app.use('/admin/api', adminAuth, adminApiRouter);
 
 // app.use('/', indexRouter);
 app.use('/api', authRoutes);
