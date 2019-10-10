@@ -7,7 +7,7 @@ const {
   getAllRegions,
   getAllDistricts,
   getAllPlaces,
-} = require('../controllers/getAllMap');
+} = require('../controllers/get-all-map');
 
 // require contollers "getMapById"
 const {
@@ -19,9 +19,9 @@ const {
   getRegionByIdAndDistrictByIdPlaces,
   getRegionByIdDistrictByIdPlaceById,
   getAllPlacesByRegionId,
-} = require('../controllers/getMapById');
+} = require('../controllers/get-map-byId');
 
-const authController = require('../controllers/authController');
+const authController = require('../controllers/auth-controller');
 
 // Basic "/api" route
 router.get('/', (req, res) => {

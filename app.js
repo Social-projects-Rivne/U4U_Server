@@ -8,13 +8,13 @@ const cors = require('cors');
 
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
-const adminApiRouter = require('./routes/adminApi');
+const adminApiRouter = require('./routes/admin-api');
 const authRoutes = require('./routes/auth');
 const validRoutes = require('./routes/validation');
-const adminAuthRoutes = require('./routes/adminAuth');
+const adminAuthRoutes = require('./routes/admin-auth');
 
 const auth = require('./middlewares/auth');
-const adminAuth = require('./middlewares/adminAuth');
+const adminAuth = require('./middlewares/admin-auth');
 
 const app = express();
 
@@ -26,13 +26,15 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-app.use('/admin', adminAuthRoutes);
-app.use('/admin/api', adminAuth, adminApiRouter);
+
 
 // app.use('/', indexRouter);
 app.use('/api', authRoutes);
-app.use('/api', auth, apiRouter);
 app.use('/api', validRoutes);
+app.use('/api', apiRouter);
+
+app.use('/admin', adminAuthRoutes);
+app.use('/admin/api', adminAuth, adminApiRouter);
 
 app.use((req, res, next) => {
   next(createError(404));

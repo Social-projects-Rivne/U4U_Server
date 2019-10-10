@@ -37,7 +37,6 @@ mongoose.connect(conf.mongoUrl, { useNewUrlParser: true, useUnifiedTopology: tru
     require('../config/postgre');
   })
   .then(() => {
-    console.log(port);
     server.listen(port);
     server.on('error', onError);
     server.on('listening', onListening);
