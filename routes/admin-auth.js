@@ -5,31 +5,31 @@ const adminAuthController = require('../controllers/admin-auth-controller');
 
 const router = express.Router();
 
-router.post('/login', [
+router.post('/login', valid([
   check('email', 'Email is invalid!')
     .not().isEmpty()
     .isEmail()
     .normalizeEmail(),
   check('password', 'Password cannot be empty!')
     .not().isEmpty(),
-], valid, adminAuthController.login);
+]), adminAuthController.login);
 
-router.post('/refresh-token', [
+router.post('/refresh-token', valid([
   check('refreshToken')
     .not().isEmpty()
     .isString(),
-], valid, adminAuthController.refreshToken);
+]), adminAuthController.refreshToken);
 
-router.post('/check-token', [
+router.post('/check-token', valid([
   check('accessToken')
     .not().isEmpty()
     .isString(),
-], valid, adminAuthController.checkToken);
+]), adminAuthController.checkToken);
 
-router.post('/logout', [
+router.post('/logout', valid([
   check('accessToken')
     .not().isEmpty()
     .isString(),
-], valid, adminAuthController.logout);
+]), adminAuthController.logout);
 
 module.exports = router;
