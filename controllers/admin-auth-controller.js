@@ -7,11 +7,11 @@ exports.login = async (req, res) => {
     const { email, password } = req.body;
 
     if (!email) {
-        return res.status(400).json({ err: 'Email is required field!' });
+        return res.status(400).json({ errors: [{ msg: 'Email is required field!' }] });
     }
 
     if (!password) {
-        return res.status(400).json({ err: 'Password is required field!' });
+        return res.status(400).json({ errors: [{ msg: 'Password is required field!' }] });
     }
 
     try {
@@ -91,23 +91,28 @@ exports.refreshToken = async (req, res) => {
             return res.status(401).json({ errors: [{ msg: 'Invalid refresh token.' }] });
         }
     } catch (error) {
-        return res.status(401).json({ errors: [{ param: 'refreshExpiredError', msg: 'Refresh token expired.' }] });
+        console.log(error)
+        return res.status(401).json({ errors: [{ msg: 'Refresh token expired.', param: 'refreshExpired' }] });
     }
 };
 
 exports.checkToken = async (req, res) => {
     const clientRT = req.body.accessToken;
 
-    try {
-        jwt.verify(clientRT, adminJwtConf.secret);
-
-        return res.status(200).json({
-            status: true,
-        });
-    } catch (error) {
-        return res.status(200).json({
-            status: false,
-        });
+    if (clientRT) {
+        try {
+            jwt.verify(clientRT, adminJwtConf.secret);
+    
+            return res.status(200).json({
+                status: true,
+            });
+        } catch (error) {
+            return res.status(200).json({
+                status: false,
+            });
+        }
+    } else {
+        return res.status(401).json({ errors: [{ msg: 'Can`t find refresh token.' }] });
     }
 };
 
@@ -129,6 +134,6 @@ exports.logout = async (req, res) => {
             status: true,
         });
     } catch (error) {
-        return res.status(401).json({ errors: [{ param: 'accessExpiredError', msg: 'Access token expired.' }] });
+        return res.status(401).json({ errors: [{ msg: 'Access token expired.' }] });
     }
 };
