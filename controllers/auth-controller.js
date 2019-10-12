@@ -88,9 +88,11 @@ exports.refreshToken = async (req, res) => {
 };
 
 exports.checkToken = async (req, res) => {
+  const { token } = req.body
   try {
     jwt.verify(token, jwtConf.secret);
   } catch (err) {
+    console.log(err)
     return res.status(401).json({ err });
   }
 
