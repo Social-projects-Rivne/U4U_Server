@@ -92,7 +92,6 @@ exports.checkToken = async (req, res) => {
   try {
     jwt.verify(token, jwtConf.secret);
   } catch (err) {
-    console.log(err)
     return res.status(401).json({ err });
   }
 
