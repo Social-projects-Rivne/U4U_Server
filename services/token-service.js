@@ -11,75 +11,73 @@ class TokenService {
     this.refreshExpiresIn = jwt.refreshExpiresIn;
   }
 
-  createTokens = async (userId) => {
-          try {
-              const payload = {
-                  userId
-              };
-
-              // create Tokens
-              const accessToken = jwt.sign(payload, this.secret, { expiresIn: this.expiresIn });
-              const refreshToken = jwt.sign(payload, this.refreshSecret,
-                  { expiresIn: this.refreshExpiresIn });
-
-              // If the user has ever logged in, ( update the tokens else create )
-              if (await tokenModel.findOne({ where: { user_id: userId } })) {
-                  tokenModel.update({
-                      access_token: accessToken,
-                      refresh_token: refreshToken,
-                  }, { where: { user_id: userId } });
-              } else {
-                  await tokenModel.create({
-                      user_id: userId,
-                      access_token: accessToken,
-                      refresh_token: refreshToken,
-                  });
-              }
-
-              return { accessToken, refreshToken, expiresIn: this.expiresIn }
-
-          } catch (e) {
-              return Promise.reject(e);
-          }
-  };
-
-  refreshTokens = async (token) => {
+  async createTokens(userId) {
     try {
-        const { userId } = jwt.verify(token, this.refreshSecret);
-        await userModel.findOne({ where: { id: userId } });
+      const payload = {
+        userId,
+      };
 
-        // compare token from client with token in db
-        const { dataValues } = await tokenModel.findOne({ where: { user_id: userId } });
-        if (token !== dataValues.refresh_token) throw 'refresh token does not match';
+      // create Tokens
+      const accessToken = jwt.sign(payload, this.secret, { expiresIn: this.expiresIn });
+      const refreshToken = jwt.sign(payload, this.refreshSecret,
+        { expiresIn: this.refreshExpiresIn });
 
-        return  await this.createTokens(userId);
+      // If the user has ever logged in, ( update the tokens else create )
+      if (await tokenModel.findOne({ where: { user_id: userId } })) {
+        tokenModel.update({
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        }, { where: { user_id: userId } });
+      } else {
+        await tokenModel.create({
+          user_id: userId,
+          access_token: accessToken,
+          refresh_token: refreshToken,
+        });
+      }
+
+      return { accessToken, refreshToken, expiresIn: this.expiresIn };
     } catch (e) {
-        return Promise.reject(e);
+      return Promise.reject(e);
     }
-  };
+  }
 
-  verify = async (token) => {
-      try {
-          const decode = jwt.verify(token, jwtConf.secret);
-          const dbToken = await tokenModel.findOne({ where: { user_id: decode.userId } });
-          if (token !== dbToken.dataValues.access_token) throw 'Token dose not match';
-          return decode.userId;
-      } catch (e) {
-          return Promise.reject(e);
-      }
-  };
+  async refreshTokens(token) {
+    try {
+      const { userId } = jwt.verify(token, this.refreshSecret);
+      await userModel.findOne({ where: { id: userId } });
 
-  logOut = async (token) => {
-      try {
-          const { userId } = jwt.verify(token, jwtConf.secret);
-          if (!userId) throw 'invalid token';
+      // compare token from client with token in db
+      const { dataValues } = await tokenModel.findOne({ where: { user_id: userId } });
+      if (token !== dataValues.refresh_token) throw 'refresh token does not match';
 
-          await tokenModel.destroy({ where: { user_id: userId } });
-      } catch (e) {
-          return Promise.reject(e);
-      }
-  };
+      return await this.createTokens(userId);
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
 
+  async verify(token) {
+    try {
+      const decode = jwt.verify(token, this.secret);
+      const dbToken = await tokenModel.findOne({ where: { user_id: decode.userId } });
+      if (token !== dbToken.dataValues.access_token) throw 'Token dose not match';
+      return decode.userId;
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
+
+  async logOut(token) {
+    try {
+      const { userId } = jwt.verify(token, this.secret);
+      if (!userId) throw 'invalid token';
+
+      await tokenModel.destroy({ where: { user_id: userId } });
+    } catch (e) {
+      return Promise.reject(e);
+    }
+  }
 }
 
 module.exports = TokenService;
