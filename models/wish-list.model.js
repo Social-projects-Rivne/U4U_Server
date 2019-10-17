@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const wishListSchema = new Schema({
   _id: {
-    type: ObjectId,
+    type: String,
     required: true,
   },
   userId:{
@@ -39,4 +39,4 @@ const wishListSchema = new Schema({
   }
 });
 
-module.exports = mongoose.model('wishList', wishListSchema);
+module.exports = mongoose.model('wishlists', wishListSchema);
