@@ -9,3 +9,6 @@ exports.getAllReviews = (req, res) => {
         res.status(404).send({message: "404 Not found"});
     })
 };
+exports.postReview = (req, res) => {
+    console.log(req.body);
+}
