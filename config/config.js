@@ -20,4 +20,5 @@ module.exports = {
     refreshSecret: 'adminPanelVeryRefreshSecret',
     refreshExpiresIn: 36000,
   },
+  weatherApiKey: process.env.APIKEY_WEATHER
 };
