@@ -10,5 +10,9 @@ exports.getAllReviews = (req, res) => {
     })
 };
 exports.postReview = (req, res) => {
+    // must decode id of user  --- create middlevare
+    // then i must know id of place --- hardcode this is now
+    // what with update at ? --- set in on put
+    // and middleware validation --- created
     console.log(req.body);
 }
