@@ -1,49 +1,22 @@
 const jwt = require('jsonwebtoken');
-const { validationResult } = require('express-validator');
+const TokenService = require('../services/token-service');
 const userModel = require('../models/user.model');
 const tokenModel = require('../models/token.model');
 const { jwtConf } = require('../config/config');
 
+const tokenService = new TokenService(jwtConf);
+
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
-  if (!email || !password) {
-    return res.status(400).json({ err: 'email and password are required fields' });
-  }
 
   try {
     const user = await userModel.findOne({ where: { email, password } });
     if (!user) throw '';
 
-    const payload = {
-      userId: user.dataValues.id,
-    };
-
-    // create Tokens
-    const accessToken = jwt.sign(payload, jwtConf.secret, { expiresIn: jwtConf.expiresIn });
-    const refreshToken = jwt.sign(payload, jwtConf.refreshSecret,
-      { expiresIn: jwtConf.refreshExpiresIn });
-
-    // If the user has ever logged in, ( update the tokens else create )
-    if (await tokenModel.findOne({ where: { user_id: user.id } })) {
-      tokenModel.update({
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      }, { where: { user_id: user.dataValues.id } });
-    } else {
-      await tokenModel.create({
-        user_id: user.dataValues.id,
-        access_token: accessToken,
-        refresh_token: refreshToken,
-      });
-    }
+    const tokens = await tokenService.createTokens(user.dataValues.id);
 
     // send tokens to the client
-    res.status(200).json({
-      accessToken,
-      refreshToken,
-      expiresIn: jwtConf.expiresIn,
-    });
+    res.status(200).json(tokens);
   } catch (err) {
     if (err) throw err;
     res.status(401).json({ err: 'Wrong password or email' });
@@ -54,40 +27,17 @@ exports.refreshToken = async (req, res) => {
   const { refreshToken } = req.body;
 
   try {
-    const { userId } = jwt.verify(refreshToken, jwtConf.refreshSecret);
-    await userModel.findOne({ where: { id: userId } });
-
-    const payload = {
-      userId,
-    };
-
-    // compare token from client with token in db
-    const { dataValues } = await tokenModel.findOne({ where: { user_id: userId } });
-    if (refreshToken !== dataValues.refresh_token) throw 'refresh token does not match';
-
-    // create new tokens
-    const accessToken = jwt.sign(payload, jwtConf.secret, { expiresIn: jwtConf.expiresIn });
-    const newRefreshToken = jwt.sign(payload, jwtConf.refreshSecret,
-      { expiresIn: jwtConf.refreshExpiresIn });
-
-    // refresh old tokens
-    await tokenModel.update({
-      access_token: accessToken,
-      refresh_token: newRefreshToken,
-    }, { where: { user_id: userId } });
+    const tokens = await tokenService.refreshTokens(refreshToken);
 
     // send tokens to client
-    res.status(200).json({
-      accessToken,
-      refreshToken: newRefreshToken,
-      expiresIn: jwtConf.expiresIn,
-    });
+    res.status(200).json(tokens);
   } catch (err) {
     res.status(401).json({ err: err.message });
   }
 };
 
 exports.checkToken = async (req, res) => {
+  const { token } = req.body;
   try {
     jwt.verify(token, jwtConf.secret);
   } catch (err) {
@@ -99,10 +49,7 @@ exports.checkToken = async (req, res) => {
 
 exports.logOut = async (req, res) => {
   try {
-    const { userId } = jwt.verify(token, jwtConf.secret);
-    if (!userId) throw 'invalid token';
-
-    await tokenModel.destroy({ where: { user_id: userId } });
+    await tokenService.logOut(req.body.token);
     res.status(200).send();
   } catch (err) {
     res.status(400).json({ err });
