@@ -1,5 +1,7 @@
 const reviewsModel = require('../models/reviews.model');
-const decodeJwt = require('../middlewares/decode-token');
+const tokenservice = require('../services/token-service');
+const { jwtConf } = require('../config/config');
+const tokenService = new tokenservice(jwtConf);
 
 exports.getAllReviews = (req, res) => {
   reviewsModel.find({})
@@ -11,21 +13,22 @@ exports.getAllReviews = (req, res) => {
     });
 };
 
-exports.postReview = (req, res) => {
-  const { userJwt, comment, placeId, rating } = req.body;
-  decodeJwt(userJwt)
-    .then((userId) => {
-      reviewsModel.create({
-        comment: comment,
-        placeId: placeId,
-        createdBy: userId,
-        rating: rating
-      })
-        .then(() => {
-          res.status(200).send({ message: 'Its okay, we added your comment, thank you ;)' });
-        })
-        .catch(() => {
-          res.status(500).send({ message: 'OPSS, someting goes wrong' });
-        });
+exports.postReview = async (req, res) => {
+  try {
+    const { userJwt, comment, placeId, rating } = req.body;
+
+    const userId = await tokenService.tokenDecode(userJwt);
+
+    await reviewsModel.create({
+      comment: comment,
+      placeId: placeId,
+      createdBy: userId,
+      rating: rating
     });
+
+    await res.status(200).send({message: 'Thanks, we added your comment'});
+  }
+  catch (e) {
+    res.status(500).send({message: e});
+  }  
 };
