@@ -1,5 +1,6 @@
 const reviewsModel = require('../models/reviews.model');
 const tokenservice = require('../services/token-service');
+const placeModel = require('../models/places.model');
 const { jwtConf } = require('../config/config');
 const tokenService = new tokenservice(jwtConf);
 
@@ -15,7 +16,11 @@ exports.getAllReviews = (req, res) => {
 
 exports.postReview = async (req, res) => {
   try {
-    const { userJwt, comment, placeId, rating } = req.body;
+    const { placeId, comment, rating, userJwt } = req.body;
+    const place = await placeModel.findOne({ _id: placeId });
+    if(!place){
+      throw 'Sorry invalid id of place, try later';
+    }
 
     const userId = await tokenService.tokenDecode(userJwt);
 
@@ -29,6 +34,6 @@ exports.postReview = async (req, res) => {
     await res.status(200).send({message: 'Thanks, we added your comment'});
   }
   catch (e) {
-    res.status(500).send({message: e});
+    res.status(500).send({message: 'Wrong id of place'});
   }  
 };
