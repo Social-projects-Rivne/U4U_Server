@@ -1,4 +1,6 @@
+
 require('dotenv').config();
+const externalApis = require('./externalApis');
 
 module.exports = {
   mongoUrl: `mongodb+srv://${process.env.DB_MONGO_LOGIN}:${process.env.DB_MONGO_PASSWORD}@cluster0-q5xnz.mongodb.net/Ukraine4You?retryWrites=true&w=majority`,
@@ -20,5 +22,5 @@ module.exports = {
     refreshSecret: 'adminPanelVeryRefreshSecret',
     refreshExpiresIn: 36000,
   },
-  weatherApiKey: process.env.APIKEY_WEATHER
+  externalApis,
 };
