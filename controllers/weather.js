@@ -98,7 +98,7 @@ async function getCurrentWeather(query) {
   return {
     place: {
       latitude: Number(options.latitude),
-      longitude: (options.longitude),
+      longitude: Number(options.longitude),
       ...placeInfo,
     },
     currently: weather.currently,
