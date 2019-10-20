@@ -22,7 +22,7 @@ exports.postReview = async (req, res) => {
       throw 'Sorry invalid id of place, try later';
     }
 
-    const userId = await tokenService.tokenDecode(userJwt);
+    const userId = await tokenService.verify(userJwt);
 
     await reviewsModel.create({
       comment: comment,
@@ -34,6 +34,6 @@ exports.postReview = async (req, res) => {
     await res.status(200).send({message: 'Thanks, we added your comment'});
   }
   catch (e) {
-    res.status(500).send({message: 'Wrong id of place'});
+    res.status(500).send({message: 'Wrong id of place or invalid JWT'});
   }  
 };

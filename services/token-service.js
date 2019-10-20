@@ -78,16 +78,6 @@ class TokenService {
       return Promise.reject(e);
     }
   }
-
-  async tokenDecode(token){
-    try {
-      const { userId } = await jwt.verify(token, this.secret);
-      return userId;
-    } 
-    catch (e) {
-      return Promise.reject(e);
-    }
-  }
 }
 
 module.exports = TokenService;
