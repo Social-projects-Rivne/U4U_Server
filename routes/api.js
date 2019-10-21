@@ -21,6 +21,8 @@ const {
   getAllPlacesByRegionId,
 } = require('../controllers/get-map-byId');
 
+const weatherRouter = require('../routes/weather');
+
 const authController = require('../controllers/auth-controller');
 
 // Basic "/api" route
@@ -38,6 +40,7 @@ router.get('/', (req, res) => {
       { allPlacesInDistrictByIdAndRegionById: '/regions/:id/districts/:id2/places' },
       { RegionByIdDistrictByIdPlaceById: '/regions/:id/districts/:id2/places/:id3' },
       { AllPlacesByRegionId: '/regions/:RegionId/places' },
+      { PlaceWeatherCurrent: '/weather/current' },
     ],
   );
 });
@@ -57,6 +60,7 @@ router.get('/regions/:RegionId/districts/:DistrictId/places', getRegionByIdAndDi
 router.get('/regions/:RegionId/districts/:DistrictId/places/:PlaceId', getRegionByIdDistrictByIdPlaceById);
 
 router.get('/regions/:RegionId/places', getAllPlacesByRegionId);
+router.use('/weather', weatherRouter);
 
 
 module.exports = router;
