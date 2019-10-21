@@ -12,6 +12,7 @@ const adminApiRouter = require('./routes/admin-api');
 const authRoutes = require('./routes/auth');
 const validRoutes = require('./routes/validation');
 const adminAuthRoutes = require('./routes/admin-auth');
+const wishList = require('./routes/wish-list');
 const reviewsRoutes = require('./routes/reviews');
 
 const auth = require('./middlewares/auth');
@@ -33,6 +34,7 @@ app.use(bodyParser.json());
 app.use('/api', authRoutes);
 app.use('/api', validRoutes);
 app.use('/api', apiRouter);
+app.use('/api', wishList);
 app.use('/api', reviewsRoutes);
 
 app.use('/admin', adminAuthRoutes);
