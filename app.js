@@ -13,7 +13,6 @@ const authRoutes = require('./routes/auth');
 const validRoutes = require('./routes/validation');
 const adminAuthRoutes = require('./routes/admin-auth');
 const wishList = require('./routes/wish-list');
-
 const auth = require('./middlewares/auth');
 const adminAuth = require('./middlewares/admin-auth');
 
@@ -34,7 +33,6 @@ app.use('/api', authRoutes);
 app.use('/api', validRoutes);
 app.use('/api', apiRouter);
 app.use('/api', wishList);
-
 app.use('/admin', adminAuthRoutes);
 app.use('/admin/api', adminAuth, adminApiRouter);
 

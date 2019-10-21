@@ -11,10 +11,9 @@ const wishListSchema = new Schema({
       type: String,
       required: true,
   },
-  comments:[{ 
-      body: String,
-      date: Date 
-  }],
+  comment:{ 
+      type: String,
+  },
 
   todo:{
       type: Boolean,
