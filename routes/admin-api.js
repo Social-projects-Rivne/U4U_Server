@@ -1,8 +1,6 @@
 const express = require('express');
 const router = express.Router();
 
-const { getAllModerators } = require('../controllers/get-all-moderators');
-
-router.get('/moderators', getAllModerators);
+// info about this routes  like in http://localhost:8080/api
 
 module.exports = router;
