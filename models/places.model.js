@@ -43,6 +43,14 @@ const placesSchema = new Schema({
     type: String,
     required: true,
   },
+  regionId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "regions"
+  },
+  districtId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "districts"
+  },
 });
 
 module.exports = mongoose.model('places', placesSchema);

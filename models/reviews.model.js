@@ -13,6 +13,7 @@ const reviewsModel = new Schema({
   placeId: {
     type: String,
     required: true,
+    ref: "places"
   },
   createdBy: {
     type: Number,
