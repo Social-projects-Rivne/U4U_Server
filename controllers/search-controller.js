@@ -30,25 +30,38 @@ exports.getSearchStar = (req, res) => {
     .aggregate([
       {
         $group: {
-          _id: "$placeId",
-          stars: { $avg: "$rating" }
-        }
+          _id: '$placeId',
+          stars: { $avg: '$rating' },
+        },
       },
       {
-        $sort: { stars: -1 }
+        $sort: { stars: -1 },
       },
       {
-        $limit: 5
+        $limit: 5,
+      },
+      {
+        $project: {
+          placeId: {
+            $toObjectId: '$_id',
+          },
+          stars: 1,
+        },
       },
       {
         $lookup: {
-          from: "places",
-          let: {placeId: "$placeId"},
-          pipeline: [{
-            $match: {placeId: "$$placeId"}
-          }],
-          as: "placeName"
-        }
+          from: 'places',
+          localField: 'placeId',
+          foreignField: '_id',
+          as: 'places',
+        },
+      },
+      {
+        $project: {
+          stars: 1,
+          // placeId: 1,
+          name: { $arrayElemAt: ['$places.name', 0] },
+        },
       },
     ])
     .then((data) => {
@@ -57,4 +70,4 @@ exports.getSearchStar = (req, res) => {
     .catch(() => {
       res.status(404).send({ message: 'Not Found' });
     });
-}
+};
