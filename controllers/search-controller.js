@@ -3,7 +3,7 @@ const reviews = require('../models/reviews.model');
 
 exports.getSearchData = (req, res) => {
   places
-    .find({}, {
+    .find({ name: { $regex: req.query.q, "$options": "i" } }, {
       _id: 1,
       name: 1,
       regionId: 1,
@@ -59,8 +59,28 @@ exports.getSearchStar = (req, res) => {
       {
         $project: {
           stars: 1,
-          // placeId: 1,
           name: { $arrayElemAt: ['$places.name', 0] },
+        },
+      },
+    ])
+    .then((data) => {
+      res.status(200).send(data);
+    })
+    .catch(() => {
+      res.status(404).send({ message: 'Not Found' });
+    });
+};
+
+exports.getRandomPlace = (req, res) => {
+  places
+    .aggregate([
+      {
+        $sample: { size: 1 }
+      },
+      {
+        $project: {
+          _id: 0,
+          id: '$_id'
         },
       },
     ])
