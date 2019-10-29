@@ -1,5 +1,4 @@
 const places = require('../models/places.model');
-const reviews = require('../models/reviews.model');
 
 exports.getSearchData = (req, res) => {
   places
@@ -26,40 +25,19 @@ exports.getSearchData = (req, res) => {
 };
 
 exports.getSearchStar = (req, res) => {
-  reviews
+  places
     .aggregate([
       {
-        $group: {
-          _id: '$placeId',
-          stars: { $avg: '$rating' },
-        },
-      },
-      {
-        $sort: { stars: -1 },
+        $sort: { ratingAvg: -1 },
       },
       {
         $limit: 5,
       },
       {
         $project: {
-          placeId: {
-            $toObjectId: '$_id',
-          },
-          stars: 1,
-        },
-      },
-      {
-        $lookup: {
-          from: 'places',
-          localField: 'placeId',
-          foreignField: '_id',
-          as: 'places',
-        },
-      },
-      {
-        $project: {
-          stars: 1,
-          name: { $arrayElemAt: ['$places.name', 0] },
+          _id: 1,
+          ratingAvg: 1,
+          name: 1,
         },
       },
     ])
