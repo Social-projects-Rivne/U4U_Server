@@ -4,9 +4,7 @@ const Ban = require('./ban.model.js');
 const Business = require('./business.model.js');
 const Token = require('./token.model.js');
 
-const Ban = require('../models/ban.model');
-const Business = require('../models/business.model');
-const Token = require('../models/token.model');
+
 
 const User = sequelize.define('users', {
   id: {

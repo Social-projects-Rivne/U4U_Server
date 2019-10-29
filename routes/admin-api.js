@@ -1,8 +1,12 @@
 const express = require('express');
 const router = express.Router();
 
-const accountsController = require('../controllers/admin-accounts.js');
+const userController = require('../controllers/user-controller');
 
-router.get('/bans', accountsController.getBanedAccounts);
+// list of banned users with offset pagination
+router.get('/bans', userController.getBannedUsers);
+
+// list of business users with offset pagination
+router.get('/business', userController.getBusinessUsers);
 
 module.exports = router;
