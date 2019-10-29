@@ -3,7 +3,7 @@ const reviews = require('../models/reviews.model');
 
 exports.getSearchData = (req, res) => {
   places
-    .find({ name: { $regex: req.query.q, "$options": "i" } }, {
+    .find({ name: { $regex: `\\b${req.query.q}`, "$options": "i" } }, {
       _id: 1,
       name: 1,
       regionId: 1,
