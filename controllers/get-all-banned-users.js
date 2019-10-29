@@ -1,7 +1,13 @@
-const user = require('../models/user.model');
+const User = require('../models/user.model');
+const Ban = require('../models/ban.model');
 
 exports.getAllUsers = (req, res) => {
-  user.findAll({})
+  User.findAll({
+    include: [{
+      model: Ban,
+      required: true
+     }]
+  })
     .then((data) => {
       res.status(200).send(data);
     })

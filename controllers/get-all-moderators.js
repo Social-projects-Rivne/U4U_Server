@@ -1,7 +1,7 @@
 const moderator = require('../models/moderator.model');
 
 exports.getAllModerators = (req, res) => {
-  moderator.find({})
+  moderator.findAll({})
     .then((data) => {
       res.status(200).send(data);
     })

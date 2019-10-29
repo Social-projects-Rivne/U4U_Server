@@ -4,6 +4,10 @@ const Ban = require('./ban.model.js');
 const Business = require('./business.model.js');
 const Token = require('./token.model.js');
 
+const Ban = require('../models/ban.model');
+const Business = require('../models/business.model');
+const Token = require('../models/token.model');
+
 const User = sequelize.define('users', {
   id: {
     type: Sequelize.INTEGER,
@@ -72,18 +76,19 @@ const User = sequelize.define('users', {
  * Relation Users -> Bans
  */
 
-  User.hasOne(Ban, { foreinKey: 'user_id' });
+User.hasOne(Ban, {foreignKey: 'user_id'});
+
 
 /**
  * Relation Users -> Business
  */
 
-  User.hasOne(Business, { foreinKey: 'user_id' });
+User.hasOne(Business, {foreignKey: 'user_id'});
 
 /**
  * Relation Users -> Tokens
  */
 
-  User.hasOne(Token, { foreinKey: 'user_id' });
+User.hasOne(Token, {foreignKey: 'user_id'});
 
 module.exports = User;
