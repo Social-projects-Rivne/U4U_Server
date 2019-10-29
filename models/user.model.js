@@ -1,5 +1,8 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/postgre');
+const Ban = require('./ban.model.js');
+const Business = require('./business.model.js');
+const Token = require('./token.model.js');
 
 const User = sequelize.define('users', {
   id: {
@@ -69,24 +72,18 @@ const User = sequelize.define('users', {
  * Relation Users -> Bans
  */
 
-User.associate = (models) => {
-  User.hasOne(models.Ban);
-};
+  User.hasOne(Ban, { foreinKey: 'user_id' });
 
 /**
  * Relation Users -> Business
  */
 
-User.associate = (models) => {
-  User.hasOne(models.Business);
-};
+  User.hasOne(Business, { foreinKey: 'user_id' });
 
 /**
  * Relation Users -> Tokens
  */
 
-User.associate = (models) => {
-  User.hasOne(models.Token);
-};
+  User.hasOne(Token, { foreinKey: 'user_id' });
 
 module.exports = User;

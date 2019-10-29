@@ -38,7 +38,7 @@ app.use('/api', wishList);
 app.use('/api', reviewsRoutes);
 
 app.use('/admin', adminAuthRoutes);
-app.use('/admin/api', adminAuth, adminApiRouter);
+app.use('/admin/api', adminApiRouter);
 
 app.use((req, res, next) => {
   next(createError(404));
