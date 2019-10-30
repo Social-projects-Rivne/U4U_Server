@@ -15,10 +15,15 @@ const adminAuthRoutes = require('./routes/admin-auth');
 const wishList = require('./routes/wish-list');
 const reviewsRoutes = require('./routes/reviews');
 <<<<<<< HEAD
+<<<<<<< HEAD
 const checkRole = require('./routes/check-role-admin');
 =======
 const bannedUsersRoutes = require('./routes/banned-users');
 >>>>>>> 29c3de22f8da72de7bc7090d8f76a01203718bd6
+=======
+const checkRole = require('./routes/check-role-admin');
+const bannedUsersRoutes = require('./routes/banned-users');
+>>>>>>> 6d3efe82d7687d8595884ac4aa14f0842c7902e0
 
 const auth = require('./middlewares/auth');
 const adminAuth = require('./middlewares/admin-auth');
