@@ -16,76 +16,37 @@ exports.login = async (req, res) => {
 
   try {
     const user = await moderatorModel.findOne({ where: { email, password } });
-    if(user.is_admin === true){
 
-      const refteshTokenPayload = {
-        userId: user.dataValues.id,
-        admin: user.is_admin,
-        sub: 'refreshToken',
-      };
+    const refteshTokenPayload = {
+      userId: user.dataValues.id,
+      sub: 'refreshToken',
+    };
 
-      const accessTokenPayload = {
-        userId: user.dataValues.id,
-        admin: user.is_admin,
-        sub: 'accessToken',
-      };
+    const accessTokenPayload = {
+      userId: user.dataValues.id,
+      sub: 'accessToken',
+    };
 
-      const refreshToken = jwt.sign(refteshTokenPayload, adminJwtConf.refreshSecret,
-        { expiresIn: adminJwtConf.refreshExpiresIn });
-      const accessToken = jwt.sign(accessTokenPayload, adminJwtConf.secret,
-        { expiresIn: adminJwtConf.expiresIn });
+    const refreshToken = jwt.sign(refteshTokenPayload, adminJwtConf.refreshSecret,
+      { expiresIn: adminJwtConf.refreshExpiresIn });
+    const accessToken = jwt.sign(accessTokenPayload, adminJwtConf.secret,
+      { expiresIn: adminJwtConf.expiresIn });
 
-      if (await adminTokenModel.findOne({ where: { user_id: user.id } })) {
-        await adminTokenModel.update({
-          refresh_token: refreshToken,
-        }, { where: { user_id: user.dataValues.id } });
-      } else {
-        await adminTokenModel.create({
-          user_id: user.dataValues.id,
-          admin: user.is_admin,
-          refresh_token: refreshToken,
-        });
-      }
-
-      return res.status(200).json({
-        accessToken,
-        refreshToken,
+    if (await adminTokenModel.findOne({ where: { user_id: user.id } })) {
+      await adminTokenModel.update({
+        refresh_token: refreshToken,
+      }, { where: { user_id: user.dataValues.id } });
+    } else {
+      await adminTokenModel.create({
+        user_id: user.dataValues.id,
+        refresh_token: refreshToken,
       });
     }
-    else{
-      const user = await moderatorModel.findOne({ where: { email, password } });
 
-      const refteshTokenPayload = {
-        userId: user.dataValues.id,
-        sub: 'refreshToken',
-      };
-
-      const accessTokenPayload = {
-        userId: user.dataValues.id,
-        sub: 'accessToken',
-      };
-
-      const refreshToken = jwt.sign(refteshTokenPayload, adminJwtConf.refreshSecret,
-        { expiresIn: adminJwtConf.refreshExpiresIn });
-      const accessToken = jwt.sign(accessTokenPayload, adminJwtConf.secret,
-        { expiresIn: adminJwtConf.expiresIn });
-
-      if (await adminTokenModel.findOne({ where: { user_id: user.id } })) {
-        await adminTokenModel.update({
-          refresh_token: refreshToken,
-        }, { where: { user_id: user.dataValues.id } });
-      } else {
-        await adminTokenModel.create({
-          user_id: user.dataValues.id,
-          refresh_token: refreshToken,
-        });
-      }
-
-      return res.status(200).json({
-        accessToken,
-        refreshToken,
-      });
-    }
+    return res.status(200).json({
+      accessToken,
+      refreshToken,
+    });
   } catch (error) {
     return res.status(401).json({ errors: [{ msg: 'Can`t find user with this email and password.' }] });
   }
@@ -139,14 +100,10 @@ exports.checkToken = async (req, res) => {
 
   if (clientRT) {
     try {
-      const decoded = jwt.verify(clientRT, adminJwtConf.secret);
-
-      const { admin } = decoded;
-      const adminStatus = admin ? true : false;
+      jwt.verify(clientRT, adminJwtConf.secret);
 
       return res.status(200).json({
         status: true,
-        admin: adminStatus
       });
     } catch (error) {
       return res.status(200).json({
