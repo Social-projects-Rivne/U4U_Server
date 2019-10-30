@@ -1,7 +1,7 @@
 const ban = require('../models/ban.model');
 
 exports.getAllBans = (req, res) => {
-  ban.find({})
+  ban.findAll({})
     .then((data) => {
       res.status(200).send(data);
     })
