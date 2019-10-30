@@ -1,7 +1,7 @@
 const token = require('../models/token.model');
 
 exports.getAlltokens = (req, res) => {
-  token.find({})
+  token.findAll({})
     .then((data) => {
       res.status(200).send(data);
     })

@@ -47,12 +47,4 @@ const Ban = sequelize.define('bans', {
   timestamps: false,
 });
 
-/**
- * Relation Bans -> Users
- */
-
-Ban.associate = (models) => {
-  Ban.belongsTo(models.User);
-};
-
 module.exports = Ban;
