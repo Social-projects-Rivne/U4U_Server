@@ -18,7 +18,7 @@ exports.postReview = async (req, res) => {
   try {
     const { placeId, comment, rating, userJwt } = req.body;
     const place = await placeModel.findOne({ _id: placeId });
-    if(!place){
+    if (!place) {
       throw 'Sorry invalid id of place, try later';
     }
 
@@ -31,9 +31,29 @@ exports.postReview = async (req, res) => {
       rating: rating
     });
 
-    await res.status(200).send({message: 'Thanks, we added your comment'});
+    reviewsModel
+      .aggregate([
+        {
+          $group: {
+            _id: '$placeId',
+            stars: { $avg: '$rating' },
+          },
+        },
+      ])
+      .match({ _id: placeId })
+      .then((data) => {
+        const { _id: plsId, stars } = data[0]
+        placeModel.updateOne(
+          { _id: plsId },
+          { $set: { ratingAvg: stars } })
+          .then((data) => {
+            res.status(200);
+          })
+      }).catch(err => { console.log(err) })
+
+    await res.status(200).send({ message: 'Thanks, we added your comment' });
   }
   catch (e) {
-    res.status(500).send({message: 'Wrong id of place or invalid JWT'});
-  }  
+    res.status(500).send({ message: 'Wrong id of place or invalid JWT' });
+  }
 };
