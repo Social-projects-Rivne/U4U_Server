@@ -24,12 +24,5 @@ const Business = sequelize.define('business', {
   timestamps: false,
 });
 
-/**
- * Relation Bans -> Users
- */
-
-Business.associate = (models) => {
-  Business.belongsTo(models.User);
-};
 
 module.exports = Business;
