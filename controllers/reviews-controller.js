@@ -39,17 +39,23 @@ exports.postReview = async (req, res) => {
             stars: { $avg: '$rating' },
           },
         },
-      ])
+        {
+          $project: {
+            star: {$divide: [ {$trunc: { $multiply: [ "$stars" , 10 ] } }, 10]}
+          }
+        },
+      ])      
       .match({ _id: placeId })
       .then((data) => {
-        const { _id: plsId, stars } = data[0]
+        const { _id: plsId, star } = data[0]
         placeModel.updateOne(
           { _id: plsId },
-          { $set: { ratingAvg: stars } })
+          { $set: { ratingAvg: star } })
           .then((data) => {
             res.status(200);
           })
-      }).catch(err => { console.log(err) })
+      })
+      .catch(err => { console.log(err) })
 
     await res.status(200).send({ message: 'Thanks, we added your comment' });
   }
