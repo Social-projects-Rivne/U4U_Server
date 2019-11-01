@@ -5,11 +5,11 @@ const { Schema } = mongoose;
 const wishListSchema = new Schema({
   userId:{
       type: String,
-      required: true,
+      required: false,
   },
   placeId:{
       type: String,
-      required: true,
+      required: false,
   },
   comment:{ 
       type: String,

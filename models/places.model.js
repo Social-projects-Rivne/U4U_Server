@@ -45,4 +45,14 @@ const placesSchema = new Schema({
   },
 });
 
-module.exports = mongoose.model('places', placesSchema);
+const getSearchPlace = (search) => {
+  return  places.find({name: new RegExp(search, 'i')}) 
+};
+const places = mongoose.model('places', placesSchema);
+module.exports = {
+  places,
+  getSearchPlace
+}
+ 
+
+
