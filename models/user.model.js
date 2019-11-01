@@ -1,6 +1,10 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/postgre');
 
+const Ban = require('../models/ban.model');
+const Business = require('../models/business.model');
+const Token = require('../models/token.model');
+
 const User = sequelize.define('users', {
   id: {
     type: Sequelize.INTEGER,
@@ -69,24 +73,19 @@ const User = sequelize.define('users', {
  * Relation Users -> Bans
  */
 
-User.associate = (models) => {
-  User.hasOne(models.Ban);
-};
+User.hasOne(Ban, {foreignKey: 'user_id'});
+
 
 /**
  * Relation Users -> Business
  */
 
-User.associate = (models) => {
-  User.hasOne(models.Business);
-};
+User.hasOne(Business, {foreignKey: 'user_id'});
 
 /**
  * Relation Users -> Tokens
  */
 
-User.associate = (models) => {
-  User.hasOne(models.Token);
-};
+User.hasOne(Token, {foreignKey: 'user_id'});
 
 module.exports = User;

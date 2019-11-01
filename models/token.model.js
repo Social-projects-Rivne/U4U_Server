@@ -30,12 +30,4 @@ const Token = sequelize.define('tokens', {
   timestamps: false,
 });
 
-/**
- * Relation Tokens -> Users
- */
-
-Token.associate = (models) => {
-  Token.belongsTo(models.User);
-};
-
 module.exports = Token;
