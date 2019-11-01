@@ -4,6 +4,7 @@ exports.createModerator = async (req, res) => {
   try {
     const newModerator = await Moderator.create({
       ...req.body,
+      is_admin: false,
       created_at: Date.now(),
     });
     res.status(200).json(newModerator);
