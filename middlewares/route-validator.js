@@ -93,5 +93,11 @@ module.exports = {
       check('avatar', empty)
         .not().isEmpty(),
     ],
+    checkUniqueField: [
+      check('field', empty)
+        .not().isEmpty(),
+      check('value', empty)
+        .not().isEmpty(),
+    ],
   },
 };
