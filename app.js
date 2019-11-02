@@ -40,8 +40,7 @@ app.use('/api', apiRouter);
 app.use('/api', wishList);
 app.use('/api', reviewsRoutes);
 app.use('/api', bannedUsersRoutes);
-
-app.use('/user', userRoutes);
+app.use('/api', auth, userRoutes);
 
 app.use('/admin', adminAuthRoutes);
 app.use('/admin/api', adminAuth, adminApiRouter);
