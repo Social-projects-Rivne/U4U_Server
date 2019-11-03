@@ -11,6 +11,10 @@ const placesSchema = new Schema({
     type: String,
     required: true,
   },
+  ratingAvg: {
+    type: Number,
+    required: true,
+  },
   photos: {
     type: Array,
     required: true,

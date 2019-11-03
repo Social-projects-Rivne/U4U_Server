@@ -9,12 +9,15 @@ const cors = require('cors');
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const adminApiRouter = require('./routes/admin-api');
+const adminApiModerators = require('./routes/admin-api-moderators');
 const authRoutes = require('./routes/auth');
 const validRoutes = require('./routes/validation');
 const adminAuthRoutes = require('./routes/admin-auth');
 const wishList = require('./routes/wish-list');
 const reviewsRoutes = require('./routes/reviews');
 const searchRoutes = require('./routes/search');
+const checkRole = require('./routes/check-role-admin');
+const bannedUsersRoutes = require('./routes/banned-users');
 
 const auth = require('./middlewares/auth');
 const adminAuth = require('./middlewares/admin-auth');
@@ -38,9 +41,12 @@ app.use('/api', apiRouter);
 app.use('/api', wishList);
 app.use('/api', reviewsRoutes);
 app.use('/api', searchRoutes);
+app.use('/api', bannedUsersRoutes);
 
 app.use('/admin', adminAuthRoutes);
 app.use('/admin/api', adminAuth, adminApiRouter);
+app.use('/admin/api', adminAuth, adminApiModerators);
+app.use('/admin', adminAuth, checkRole);
 
 app.use((req, res, next) => {
   next(createError(404));

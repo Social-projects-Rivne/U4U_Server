@@ -1,7 +1,7 @@
 const business = require('../models/business.model');
 
 exports.getAllBusinesses = (req, res) => {
-  business.find({})
+  business.findAll({})
     .then((data) => {
       res.status(200).send(data);
     })
