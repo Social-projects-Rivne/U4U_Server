@@ -9,6 +9,7 @@ const cors = require('cors');
 const indexRouter = require('./routes/index');
 const apiRouter = require('./routes/api');
 const adminApiRouter = require('./routes/admin-api');
+const adminApiModerators = require('./routes/admin-api-moderators');
 const authRoutes = require('./routes/auth');
 const validRoutes = require('./routes/validation');
 const adminAuthRoutes = require('./routes/admin-auth');
@@ -42,6 +43,7 @@ app.use('/api', bannedUsersRoutes);
 
 app.use('/admin', adminAuthRoutes);
 app.use('/admin/api', adminAuth, adminApiRouter);
+app.use('/admin/api', adminAuth, adminApiModerators);
 app.use('/admin', adminAuth, checkRole);
 
 app.use((req, res, next) => {
