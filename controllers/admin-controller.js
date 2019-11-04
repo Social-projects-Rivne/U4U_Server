@@ -1,3 +1,4 @@
+const url = require('url');
 const Moderator = require('../models/moderator.model');
 
 exports.createModerator = async (req, res) => {
@@ -15,7 +16,9 @@ exports.createModerator = async (req, res) => {
 
 exports.checkUniqueField = async (req, res) => {
   try {
-    const { field, value } = req.body;
+    const {query} = url.parse(req.url, true);
+    console.log(query)
+    const { field, value } = query;
     const moderator = await Moderator.findOne({ where: { [field]: value } });
 
     if (moderator) {
@@ -24,6 +27,6 @@ exports.checkUniqueField = async (req, res) => {
 
     res.status(200).send();
   } catch (e) {
-    res.status(500).send();
+    res.status(400).send();
   }
 };
