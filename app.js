@@ -17,6 +17,7 @@ const wishList = require('./routes/wish-list');
 const reviewsRoutes = require('./routes/reviews');
 const checkRole = require('./routes/check-role-admin');
 const bannedUsersRoutes = require('./routes/banned-users');
+const userRoutes = require('./routes/user');
 
 const auth = require('./middlewares/auth');
 const adminAuth = require('./middlewares/admin-auth');
@@ -40,6 +41,7 @@ app.use('/api', apiRouter);
 app.use('/api', wishList);
 app.use('/api', reviewsRoutes);
 app.use('/api', bannedUsersRoutes);
+app.use('/api', auth, userRoutes);
 
 app.use('/admin', adminAuthRoutes);
 app.use('/admin/api', adminAuth, adminApiRouter);
