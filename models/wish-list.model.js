@@ -7,11 +7,7 @@ const wishListSchema = new Schema({
       type: String,
       required: true
   },
-  placeId:{
-      type: String,
-      required: false
-  },
-  comment:{ 
+ comment:{ 
       type: String,
       required:true
   },

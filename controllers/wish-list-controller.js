@@ -42,7 +42,7 @@ exports.wishListDelete = async (req, res) => {
         const userJwt = req.header('authorization');
         const tokenSplit = userJwt.split(" ");
         const decodedJWT = await tokenService.verify(tokenSplit[1]);
-        const mongoResponse = await wishList.findByIdAndDelete({
+        await wishList.findByIdAndDelete({
             _id: id,
             userId: decodedJWT
         })
@@ -59,11 +59,10 @@ exports.markItemAsDone = async (req, res) => {
         const userJwt = req.header('authorization');
         const tokenSplit = userJwt.split(" ");
         const decodedJWT = await tokenService.verify(tokenSplit[1]);
-        const mongoRes = await wishList.findByIdAndUpdate(
+        await wishList.findByIdAndUpdate(
             { _id: id },
             { done: done, inProgress: important },
             { new: true });
-        console.log(mongoRes)
         await res.status(200).send({ message: 'Your wish is marked as done' });
     }
     catch (e) {
