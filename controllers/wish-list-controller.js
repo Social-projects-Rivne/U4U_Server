@@ -3,7 +3,7 @@ const tokenservice = require('../services/token-service');
 const { jwtConf } = require('../config/config');
 const tokenService = new tokenservice(jwtConf);
 const { getSearchPlace } = require('../models/places.model');
-
+//const { getToken } = require('../utils/token')
 
 exports.wishListGet = (req, res) => {
     wishList.find({})
@@ -13,69 +13,66 @@ exports.wishListGet = (req, res) => {
 }
 exports.wishListPost = async (req, res) => {
     try {
-    
-        const { comment } = req.body;
+        const { comment, done, inProgress } = req.body;
         const userJwt = req.header('authorization');
         const tokenSplit = userJwt.split(" ");
         const decodedJWT = await tokenService.verify(tokenSplit[1]);
-        debugger
-        await wishList.create({
+        // const token = getToken();
+        // console.log(token)
+        const mongoResponse = await wishList.create({
             comment,
-            createdBy: decodedJWT
+            done,
+            inProgress,
+            userId: decodedJWT
         });
-        await res.status(200).send({ message: 'Your wish is added' });
+        await res.status(200).send({
+            message: 'Your wish is added',
+            id: mongoResponse.id
+        });
     }
     catch (e) {
-        res.status(500).send({ message: 'Something went wrong' });
+        res.status(500).send({ message: e });
     }
 };
 
 exports.wishListDelete = async (req, res) => {
+
     try {
-        const { _id } = req.body;
+        const { id } = req.params;
         const userJwt = req.header('authorization');
         const tokenSplit = userJwt.split(" ");
         const decodedJWT = await tokenService.verify(tokenSplit[1]);
-        console.log(_id)
-        const resultDelete = await wishList.deleteOne(_id)
-        console.log(resultDelete)
-
+        const mongoResponse = await wishList.findByIdAndDelete({
+            _id: id,
+            userId: decodedJWT
+        })
         await res.status(200).send({ message: 'Your wish is deleted' });
     }
     catch (e) {
-        res.status(500).send({ message: 'Something went wrong' });
+        res.status(500).send({ message: e });
     }
 };
 
 exports.markItemAsDone = async (req, res) => {
     try {
-        const { done, _id } = req.body;
-        console.log(done)
-
-        await wishList.findOneAndUpdate(_id)
-        await res.status(200).send({ message: 'Your wish is deleted' });
+        const { done, important, id } = req.body;
+        const userJwt = req.header('authorization');
+        const tokenSplit = userJwt.split(" ");
+        const decodedJWT = await tokenService.verify(tokenSplit[1]);
+        const mongoRes = await wishList.findByIdAndUpdate(
+            { _id: id },
+            { done: done, inProgress: important },
+            { new: true });
+        console.log(mongoRes)
+        await res.status(200).send({ message: 'Your wish is marked as done' });
     }
     catch (e) {
-        res.status(500).send({ message: 'Something went wrong' });
+        res.status(500).send({ message: e });
     }
 };
 
-exports.markItemAsImportant = async (req, res) => {
-    try {
-        const { _id } = req.body;
-        console.log(_id)
-        await wishList.findByIdAndUpdate(
-            console.log(_id)
-
-        )
-        await res.status(200).send({ message: 'Your wish is deleted' });
-    }
-    catch (e) {
-        res.status(500).send({ message: 'Something went wrong' });
-    }
-};
 exports.findPlaceByName = (req, res) => {
-    const {SearchInput} = req.params;
+    const { SearchInput } = req.params;
     getSearchPlace(SearchInput).then((data) => {
         res.status(200).send(data);
     })

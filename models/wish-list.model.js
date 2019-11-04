@@ -5,28 +5,28 @@ const { Schema } = mongoose;
 const wishListSchema = new Schema({
   userId:{
       type: String,
-      required: false,
+      required: true
   },
   placeId:{
       type: String,
-      required: false,
+      required: false
   },
   comment:{ 
       type: String,
+      required:true
   },
-
   todo:{
-      type: Boolean,
+      type: Boolean
   },
   inProgress:{
-      type: Boolean,
+      type: Boolean
   },
   done:{
-      type: Boolean,
+      type: Boolean
   },
   createdAt:{
       type: Date,
-      default: Date.now,
+      default: Date.now
   },
   updatedAt:{
       type: Date,
