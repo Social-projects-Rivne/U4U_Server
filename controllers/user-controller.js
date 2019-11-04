@@ -1,43 +1,23 @@
-const url = require('url');
 
-const User = require('../models/user.model');
-const Ban = require('../models/ban.model');
-const Business = require('../models/business.model');
+const TokenService = require('./../services/token-service');
+const userModel = require('../models/user.model');
+const { jwtConf } = require('../config/config');
 
+const tokenService = new TokenService(jwtConf);
 
-exports.getBannedUsers = async (req, res) => {
+exports.getAllUserData = async (req, res) => {
   try {
-    const { query } = url.parse(req.url, true);
-    const { offset = 0, limit = 20 } = query;
+    const { token } = req.body;
+    const userID = await tokenService.verify(token);
 
-    const users = await User.findAll({
-      offset,
-      limit,
-      include: [{
-        model: Ban,
-        required: true,
-      }],
-    });
+    const getUser = await userModel.findOne({ where: { id: userID } });
+    if (!getUser) return res.status(500).send({ message: 'Can`t find user with this id' });
+    
+    const userData = getUser.dataValues;
+    delete userData.password;
 
-    res.status(200).json(users);
-  } catch (e) {
-    res.status(404).json('Not found');
-  }
-};
-
-exports.getBusinessUsers = async (req, res) => {
-  try {
-    const { query } = url.parse(req.url, true);
-    const { offset = 0, limit = 20 } = query;
-
-    const users = await User.findAll({
-      offset,
-      limit,
-      where: { is_business: true },
-    });
-
-    res.status(200).json(users);
-  } catch (e) {
-    res.status(404).json('Not found');
+    return res.status(200).send(userData);
+  } catch (err) {
+    return res.status(500).send({ message: 'Wrong user id or token' });
   }
 };
