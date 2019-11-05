@@ -1,6 +1,6 @@
 const regions = require('../models/region.model');
 const districts = require('../models/districts.model');
-const places = require('../models/places.model');
+const {places} = require('../models/places.model');
 
 exports.getAllRegions = (req, res) => {
   regions.find({})
