@@ -17,8 +17,6 @@ exports.wishListPost = async (req, res) => {
         const userJwt = req.header('authorization');
         const tokenSplit = userJwt.split(" ");
         const decodedJWT = await tokenService.verify(tokenSplit[1]);
-        // const token = getToken();
-        // console.log(token)
         const mongoResponse = await wishList.create({
             comment,
             done,
