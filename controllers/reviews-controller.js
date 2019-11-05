@@ -17,7 +17,7 @@ exports.getAllReviews = (req, res) => {
 exports.postReview = async (req, res) => {
   try {
     const { placeId, comment, rating, userJwt } = req.body;
-    const place = await placeModel.findOne({ _id: placeId });
+    const place = await placeModel.places.findOne({ _id: placeId });
     if(!place){
       throw 'Sorry invalid id of place, try later';
     }

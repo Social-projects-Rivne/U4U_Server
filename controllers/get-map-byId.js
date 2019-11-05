@@ -1,6 +1,6 @@
 const regions = require('../models/region.model');
 const district = require('../models/districts.model');
-const place = require('../models/places.model');
+const {places} = require('../models/places.model');
 
 exports.getRegionById = (req, res) => {
   const { RegionId } = req.params;
@@ -24,7 +24,7 @@ exports.getDistrictById = (req, res) => {
 };
 exports.getPlaceById = (req, res) => {
   const { PlaceId } = req.params;
-  place.findById(PlaceId)
+  places.findById(PlaceId)
     .then((data) => {
       res.status(200).send(data);
     })
