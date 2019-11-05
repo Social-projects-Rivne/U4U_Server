@@ -5,8 +5,9 @@ const { jwtConf } = require('../config/config');
 const tokenService = new tokenservice(jwtConf);
 
 exports.getAllReviews = (req, res) => {
-  reviewsModel.find({})
-    .then((data) => {
+  reviewsModel
+    .find({})
+    .then(data => {
       res.status(200).send(data);
     })
     .catch(() => {
@@ -31,9 +32,18 @@ exports.postReview = async (req, res) => {
       rating: rating
     });
 
-    await res.status(200).send({message: 'Thanks, we added your comment'});
+    await res.status(200).send({ message: 'Thanks, we added your comment' });
+  } catch (e) {
+    res.status(500).send({ message: 'Wrong id of place or invalid JWT' });
   }
-  catch (e) {
-    res.status(500).send({message: 'Wrong id of place or invalid JWT'});
-  }  
+};
+
+exports.getReviewById = async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const reviewById = await reviewsModel.find({ placeId: reviewId });
+    res.status(200).send(reviewById);
+  } catch (err) {
+    res.status(404).send({ message: 'Not found' });
+  }
 };
