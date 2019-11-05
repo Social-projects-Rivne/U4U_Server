@@ -1,4 +1,4 @@
-const places = require('../models/places.model');
+const {places} = require('../models/places.model');
 
 exports.getSearchData = (req, res) => {
   places
