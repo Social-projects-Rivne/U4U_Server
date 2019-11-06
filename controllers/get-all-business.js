@@ -1,4 +1,3 @@
-const Business = require('../models/business.model');
 const User = require('../models/user.model');
 
 exports.getAllBusiness = (req, res) => {
