@@ -19,6 +19,7 @@ const searchRoutes = require('./routes/search');
 const checkRole = require('./routes/check-role-admin');
 const bannedUsersRoutes = require('./routes/banned-users');
 const userRoutes = require('./routes/user');
+const getAllUsers = require('./routes/admin-getAllUsers');
 
 const auth = require('./middlewares/auth');
 const adminAuth = require('./middlewares/admin-auth');
@@ -49,6 +50,7 @@ app.use('/admin', adminAuthRoutes);
 app.use('/admin/api', adminAuth, adminApiRouter);
 app.use('/admin/api', adminAuth, adminApiModerators);
 app.use('/admin', adminAuth, checkRole);
+app.use('/admin/api', adminAuth, getAllUsers);
 
 app.use((req, res, next) => {
   next(createError(404));
