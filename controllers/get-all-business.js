@@ -1,11 +1,12 @@
-const business = require('../models/business.model');
+const User = require('../models/user.model');
 
-exports.getAllBusinesses = (req, res) => {
-  business.findAll({})
-    .then((data) => {
-      res.status(200).send(data);
-    })
-    .catch(() => {
-      res.status(404).send({ message: 'Not Found' });
-    });
+exports.getAllBusiness = (req, res) => {
+
+  User.findAll({where: { is_business: true }})
+  .then((data) => {
+    res.status(200).send(data);
+  })
+  .catch(() => {
+    res.status(404).send({ message: 'Not Found' });
+  });
 };
