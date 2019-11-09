@@ -90,8 +90,6 @@ module.exports = {
       check('password', empty)
         .not().isEmpty()
         .isString(),
-      check('avatar', empty)
-        .not().isEmpty(),
     ],
     checkUniqueField: [
       check('field', empty)

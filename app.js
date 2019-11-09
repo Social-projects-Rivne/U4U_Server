@@ -46,7 +46,7 @@ app.use('/api', searchRoutes);
 app.use('/api', auth, userRoutes);
 
 app.use('/admin', adminAuthRoutes);
-app.use('/admin/api', adminAuth, adminApiRouter);
+app.use('/admin/api',  adminApiRouter);
 app.use('/admin/api', adminAuth, adminApiModerators);
 app.use('/admin/api', adminAuth, bannedUsersRoutes);
 app.use('/admin/api', adminAuth, businesUsers);

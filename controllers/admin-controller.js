@@ -1,13 +1,13 @@
 const url = require('url');
 const Moderator = require('../models/moderator.model');
+const AdminService = require('../services/admin-service');
+
+const adminService = new AdminService();
 
 exports.createModerator = async (req, res) => {
   try {
-    const newModerator = await Moderator.create({
-      ...req.body,
-      is_admin: false,
-      created_at: Date.now(),
-    });
+    const newModerator = await
+    adminService.createModerator({ ...req.body, file: req.file });
     res.status(200).json(newModerator);
   } catch (e) {
     res.status(500).send();
@@ -16,8 +16,7 @@ exports.createModerator = async (req, res) => {
 
 exports.checkUniqueField = async (req, res) => {
   try {
-    const {query} = url.parse(req.url, true);
-    console.log(query)
+    const { query } = url.parse(req.url, true);
     const { field, value } = query;
     const moderator = await Moderator.findOne({ where: { [field]: value } });
 
