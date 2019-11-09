@@ -49,7 +49,7 @@ exports.postReview = async (req, res) => {
       .match({ _id: placeId })
       .then((data) => {
         const { _id: plsId, star } = data[0]
-        placeModel.updateOne(
+        placeModel.places.updateOne(
           { _id: plsId },
           { $set: { ratingAvg: star } })
           .then((data) => {
