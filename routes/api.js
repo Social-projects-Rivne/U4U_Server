@@ -24,6 +24,8 @@ const {
 const weatherRouter = require('../routes/weather');
 
 const authController = require('../controllers/auth-controller');
+const { findPlaceByName } = require('../controllers/wish-list-controller');
+
 
 // Basic "/api" route
 router.get('/', (req, res) => {
@@ -49,7 +51,7 @@ router.get('/', (req, res) => {
 router.get('/regions', getAllRegions);
 router.get('/regions/districts', getAllDistricts);
 router.get('/regions/districts/places', getAllPlaces);
-
+router.get('/places/search/:SearchInput', findPlaceByName);
 router.get('/regions/:RegionId', getRegionById);
 router.get('/regions/districts/:DistrictId', getDistrictById);
 router.get('/regions/districts/places/:PlaceId', getPlaceById);
