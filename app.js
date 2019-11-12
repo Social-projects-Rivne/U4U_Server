@@ -19,6 +19,7 @@ const searchRoutes = require('./routes/search');
 const checkRole = require('./routes/check-role-admin');
 const bannedUsersRoutes = require('./routes/banned-users');
 const userRoutes = require('./routes/user');
+const getAllUsers = require('./routes/admin-getAllUsers');
 const businesUsers = require('./routes/admin-api-business');
 const adminReviews = require('./routes/admin-api-reviews');
 
@@ -53,6 +54,7 @@ app.use('/admin/api', adminAuth, bannedUsersRoutes);
 app.use('/admin/api', adminAuth, businesUsers);
 app.use('/admin', adminAuth, checkRole);
 app.use('/admin/api', adminAuth, adminReviews);
+app.use('/admin/api', adminAuth, getAllUsers);
 
 app.use((req, res, next) => {
   next(createError(404));
