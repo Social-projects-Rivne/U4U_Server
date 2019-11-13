@@ -5,8 +5,9 @@ const { jwtConf } = require('../config/config');
 const tokenService = new tokenservice(jwtConf);
 
 exports.getAllReviews = (req, res) => {
-  reviewsModel.find({})
-    .then((data) => {
+  reviewsModel
+    .find({})
+    .then(data => {
       res.status(200).send(data);
     })
     .catch(() => {
@@ -31,9 +32,45 @@ exports.postReview = async (req, res) => {
       rating: rating
     });
 
-    await res.status(200).send({message: 'Thanks, we added your comment'});
+    reviewsModel
+      .aggregate([
+        {
+          $group: {
+            _id: '$placeId',
+            stars: { $avg: '$rating' },
+          },
+        },
+        {
+          $project: {
+            star: {$divide: [ {$trunc: { $multiply: [ "$stars" , 10 ] } }, 10]}
+          }
+        },
+      ])      
+      .match({ _id: placeId })
+      .then((data) => {
+        const { _id: plsId, star } = data[0]
+        placeModel.places.updateOne(
+          { _id: plsId },
+          { $set: { ratingAvg: star } })
+          .then((data) => {
+            res.status(200);
+          })
+      })
+      .catch(err => { console.log(err) })
+
+    await res.status(200).send({ message: 'Thanks, we added your comment' });
   }
   catch (e) {
-    res.status(500).send({message: 'Wrong id of place or invalid JWT'});
-  }  
+    res.status(500).send({ message: 'Wrong id of place or invalid JWT' });
+  }
+};
+
+exports.getReviewById = async (req, res) => {
+  try {
+    const { reviewId } = req.params;
+    const reviewById = await reviewsModel.find({ placeId: reviewId });
+    res.status(200).send(reviewById);
+  } catch (err) {
+    res.status(404).send({ message: 'Not found' });
+  }
 };
