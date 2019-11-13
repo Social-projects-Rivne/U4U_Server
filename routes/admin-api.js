@@ -12,6 +12,6 @@ router
     valid(admin.createModerator),
     adminController.createModerator);
 
-router.get('/moderator/is-field-unique', valid(admin.checkUniqueField), adminController.checkUniqueField);
+router.post('/moderator/is-field-unique', valid(admin.checkUniqueField), adminController.checkUniqueField);
 
 module.exports = router;
