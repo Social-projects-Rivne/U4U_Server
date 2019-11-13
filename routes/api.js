@@ -10,6 +10,8 @@ const {
   postNewPlace
 } = require('../controllers/get-all-map');
 
+
+
 // require contollers "getMapById"
 const {
   getRegionById,
@@ -24,6 +26,7 @@ const {
 const weatherRouter = require('../routes/weather');
 
 const authController = require('../controllers/auth-controller');
+const userController = require('../controllers/user-controller');
 const { findPlaceByName } = require('../controllers/wish-list-controller');
 
 
@@ -64,6 +67,8 @@ router.get('/regions/:RegionId/districts/:DistrictId/places/:PlaceId', getRegion
 
 router.get('/regions/:RegionId/places', getAllPlacesByRegionId);
 router.use('/weather', weatherRouter);
+
+
 
 
 module.exports = router;
