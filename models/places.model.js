@@ -64,10 +64,22 @@ const placesSchema = new Schema({
 const getSearchPlace = (search) => {
   return  places.find({name: new RegExp(search, 'i')}) 
 };
+
+const addNewPlaceToDb = (newPlace, token) =>{
+  const {isModerated, regionId, description, title} = newPlace;
+  return  places.create({
+    isModerated,
+    regionId,
+    description,
+    createdBy: token,
+    name: title
+  });
+}
 const places = mongoose.model('places', placesSchema);
 module.exports = {
   places,
-  getSearchPlace
+  getSearchPlace,
+  addNewPlaceToDb
 }
  
 

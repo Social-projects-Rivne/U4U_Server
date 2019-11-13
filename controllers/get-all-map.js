@@ -3,7 +3,8 @@ const districts = require('../models/districts.model');
 const tokenservice = require('../services/token-service');
 const { jwtConf } = require('../config/config');
 const tokenService = new tokenservice(jwtConf);
-const { places } = require('../models/places.model');
+const { places, addNewPlaceToDb } = require('../models/places.model');
+
 
 exports.getAllRegions = (req, res) => {
   regions.find({})
@@ -34,17 +35,10 @@ exports.getAllPlaces = (req, res) => {
 };
 exports.postNewPlace = async (req, res) => {
   try {
-    const { isModerated, title, description, regionId } = req.body;
     const userJwt = req.header('authorization');
     const tokenSplit = userJwt.split(" ");
     const decodedJWT = await tokenService.verify(tokenSplit[1]);
-    await places.create({
-      isModerated,
-      regionId,
-      description,
-      createdBy: decodedJWT,
-      name: title
-    });
+    await addNewPlaceToDb(req.body, decodedJWT);
     await res.status(200).send({
       message: 'Your place is added'
     });
