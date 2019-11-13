@@ -48,7 +48,7 @@ const placesSchema = new Schema({
     required: true,
   },
   regionId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "regions"
   },
   districtId: {

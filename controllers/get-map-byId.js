@@ -74,7 +74,7 @@ exports.getRegionByIdDistrictByIdPlaceById = (req, res) => {
 };
 exports.getAllPlacesByRegionId = (req, res) => {
   const { RegionId } = req.params;
-  place.find({ regionId: RegionId })
+  places.find({ regionId: RegionId })
     .then((data) => {
       res.send(data);
     })
