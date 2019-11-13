@@ -13,39 +13,43 @@ const placesSchema = new Schema({
   },
   ratingAvg: {
     type: Number,
-    required: true,
+    required: false,
   },
   photos: {
     type: Array,
-    required: true,
+    required: false,
   },
   videos: {
     type: String,
-    required: true,
+    required: false,
   },
   rating: {
     type: Number,
-    required: true,
+    required: false,
   },
   reviews: {
     type: Array,
-    required: true,
+    required: false,
+  },
+  isModerated: {
+    type: Boolean,
+    required:true,
   },
   moderateBy: {
     type: String,
-    required: true,
+    required: false,
   },
   createdBy: {
     type: String,
     required: true,
   },
   createdAt: {
-    type: String,
-    required: true,
+    type: Date,
+    default: Date.now
   },
   updateAt: {
-    type: String,
-    required: true,
+    type: Date,
+    default: Date.now
   },
   regionId: {
     type: mongoose.Schema.Types.ObjectId,

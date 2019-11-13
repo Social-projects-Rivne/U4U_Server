@@ -7,6 +7,7 @@ const {
   getAllRegions,
   getAllDistricts,
   getAllPlaces,
+  postNewPlace
 } = require('../controllers/get-all-map');
 
 // require contollers "getMapById"
@@ -20,7 +21,6 @@ const {
   getRegionByIdDistrictByIdPlaceById,
   getAllPlacesByRegionId,
 } = require('../controllers/get-map-byId');
-
 const weatherRouter = require('../routes/weather');
 
 const authController = require('../controllers/auth-controller');
@@ -51,6 +51,7 @@ router.get('/', (req, res) => {
 router.get('/regions', getAllRegions);
 router.get('/regions/districts', getAllDistricts);
 router.get('/regions/districts/places', getAllPlaces);
+router.post('/regions/districts/places', postNewPlace);
 router.get('/places/search/:SearchInput', findPlaceByName);
 router.get('/regions/:RegionId', getRegionById);
 router.get('/regions/districts/:DistrictId', getDistrictById);
