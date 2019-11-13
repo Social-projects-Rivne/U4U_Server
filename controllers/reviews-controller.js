@@ -32,8 +32,35 @@ exports.postReview = async (req, res) => {
       rating: rating
     });
 
+    reviewsModel
+      .aggregate([
+        {
+          $group: {
+            _id: '$placeId',
+            stars: { $avg: '$rating' },
+          },
+        },
+        {
+          $project: {
+            star: {$divide: [ {$trunc: { $multiply: [ "$stars" , 10 ] } }, 10]}
+          }
+        },
+      ])      
+      .match({ _id: placeId })
+      .then((data) => {
+        const { _id: plsId, star } = data[0]
+        placeModel.places.updateOne(
+          { _id: plsId },
+          { $set: { ratingAvg: star } })
+          .then((data) => {
+            res.status(200);
+          })
+      })
+      .catch(err => { console.log(err) })
+
     await res.status(200).send({ message: 'Thanks, we added your comment' });
-  } catch (e) {
+  }
+  catch (e) {
     res.status(500).send({ message: 'Wrong id of place or invalid JWT' });
   }
 };
