@@ -47,13 +47,14 @@ app.use('/api', reviewsRoutes);
 app.use('/api', searchRoutes);
 app.use('/api', auth, userRoutes);
 
-app.use('/admin/api',  adminApiRouter);
 app.use('/admin', adminAuthRoutes);
-app.use('/admin/api',  adminApiModerators);
-app.use('/admin/api',  bannedUsersRoutes);
-app.use('/admin/api',  businesUsers);
-app.use('/admin',  checkRole);
-
+app.use('/admin/api', adminAuth, adminApiRouter);
+app.use('/admin/api', adminAuth, adminApiModerators);
+app.use('/admin/api', adminAuth, bannedUsersRoutes);
+app.use('/admin/api', adminAuth, businesUsers);
+app.use('/admin', adminAuth, checkRole);
+app.use('/admin/api', adminAuth, adminReviews);
+app.use('/admin/api', adminAuth, getAllUsers);
 
 app.use((req, res, next) => {
   next(createError(404));
