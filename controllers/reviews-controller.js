@@ -75,14 +75,14 @@ exports.getReviewById = async (req, res) => {
       return item.createdBy;
     })
 
-    const UserEmails = await sequelize.query('SELECT id, email FROM users WHERE id IN ' + '(' + usersId + ')');
+    const UserEmails = await sequelize.query('SELECT id, email, nickname, avatar FROM users WHERE id IN ' + '(' + usersId + ')');
 
     const result = [];
     
     reviewById.map((reviewElem) => {
       UserEmails[0].find((userElem) => {
         if(reviewElem.createdBy === userElem.id){
-          result.push({...reviewElem._doc, userEmail: userElem.email});
+          result.push({...reviewElem._doc, userEmail: userElem.email, userAvatar: userElem.avatar, userNickname: userElem.nickname});
         }
       })
     })
