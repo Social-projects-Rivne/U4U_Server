@@ -40,7 +40,7 @@ const placesSchema = new Schema({
     required: true,
   },
   createdBy: {
-    type: String,
+    type: Number,
     required: true,
   },
   createdAt: {
