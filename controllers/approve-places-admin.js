@@ -31,10 +31,10 @@ exports.getApprovePlaces = async (req, res) => {
 
 exports.approvePlace = async (req, res) => {
     try {
-        const { idOfPlace } = req.body;
-        await places.findByIdAndUpdate({ _id: idOfPlace }, { isModerated: true });
+        const { id } = await req.body;
+        await places.findByIdAndUpdate({ _id: id }, { isModerated: true });
         res.send({ message: 'It was success' });
     } catch (error) {
-        throw new Error(err);
+        throw new Error(error);
     }
 }

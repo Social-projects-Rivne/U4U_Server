@@ -56,7 +56,7 @@ app.use('/admin/api', adminAuth, businesUsers);
 app.use('/admin', adminAuth, checkRole);
 app.use('/admin/api', adminAuth, adminReviews);
 app.use('/admin/api', adminAuth, getAllUsers);
-app.use('/admin/api', adminAuth, approvePlaces)
+app.use('/admin/api', adminAuth, approvePlaces);
 
 app.use((req, res, next) => {
   next(createError(404));
