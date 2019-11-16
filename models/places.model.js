@@ -17,7 +17,7 @@ const placesSchema = new Schema({
   },
   photos: {
     type: Array,
-    required: false,
+    required: true,
   },
   videos: {
     type: String,
@@ -65,12 +65,18 @@ const getSearchPlace = (search) => {
   return  places.find({name: new RegExp(search, 'i')}) 
 };
 
-const addNewPlaceToDb = (newPlace, token) =>{
+const addNewPlaceToDb = (newPlace, token,files) =>{
   const {isModerated, regionId, description, title} = newPlace;
+  console.log(files)
+  let photoPathArr = [];
+  for(let photoPath of files){
+    photoPathArr.push(photoPath.path);
+  }
   return  places.create({
     isModerated,
     regionId,
     description,
+    photos:photoPathArr,
     createdBy: token,
     name: title
   });

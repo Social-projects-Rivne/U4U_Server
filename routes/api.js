@@ -1,5 +1,5 @@
 const express = require('express');
-
+const uploadImage = require('../middlewares/upload-images');
 const router = express.Router();
 
 // require controllers "getAllMap"
@@ -54,7 +54,7 @@ router.get('/', (req, res) => {
 router.get('/regions', getAllRegions);
 router.get('/regions/districts', getAllDistricts);
 router.get('/regions/districts/places', getAllPlaces);
-router.post('/regions/districts/places', postNewPlace);
+router.post('/regions/districts/places', uploadImage.array('photo',10),postNewPlace);
 router.get('/places/search/:SearchInput', findPlaceByName);
 router.get('/regions/:RegionId', getRegionById);
 router.get('/regions/districts/:DistrictId', getDistrictById);

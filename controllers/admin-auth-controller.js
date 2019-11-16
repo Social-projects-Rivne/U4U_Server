@@ -5,7 +5,6 @@ const { adminJwtConf } = require('../config/config');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
   if (!email) {
     return res.status(400).json({ errors: [{ msg: 'Email is required field!' }] });
   }

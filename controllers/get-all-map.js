@@ -38,7 +38,8 @@ exports.postNewPlace = async (req, res) => {
     const userJwt = req.header('authorization');
     const tokenSplit = userJwt.split(" ");
     const decodedJWT = await tokenService.verify(tokenSplit[1]);
-    await addNewPlaceToDb(req.body, decodedJWT);
+    
+    await addNewPlaceToDb(req.body, decodedJWT, req.files);
     await res.status(200).send({
       message: 'Your place is added'
     });
