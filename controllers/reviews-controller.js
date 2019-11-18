@@ -2,6 +2,7 @@ const reviewsModel = require('../models/reviews.model');
 const tokenservice = require('../services/token-service');
 const placeModel = require('../models/places.model');
 const { jwtConf } = require('../config/config');
+const sequelize = require('../config/postgre');
 const tokenService = new tokenservice(jwtConf);
 
 exports.getAllReviews = (req, res) => {
@@ -69,7 +70,23 @@ exports.getReviewById = async (req, res) => {
   try {
     const { reviewId } = req.params;
     const reviewById = await reviewsModel.find({ placeId: reviewId });
-    res.status(200).send(reviewById);
+
+    const usersId = reviewById.map((item) => {
+      return item.createdBy;
+    })
+
+    const UserEmails = await sequelize.query('SELECT id, email, nickname, avatar FROM users WHERE id IN ' + '(' + usersId + ')');
+
+    const result = [];
+    
+    reviewById.map((reviewElem) => {
+      UserEmails[0].find((userElem) => {
+        if(reviewElem.createdBy === userElem.id){
+          result.push({...reviewElem._doc, userEmail: userElem.email, userAvatar: userElem.avatar, userNickname: userElem.nickname});
+        }
+      })
+    })
+    res.status(200).send(result);
   } catch (err) {
     res.status(404).send({ message: 'Not found' });
   }
