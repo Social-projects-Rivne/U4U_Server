@@ -23,6 +23,10 @@ const placesSchema = new Schema({
     type: String,
     required: true,
   },
+  isModerated: {
+    type: Boolean,
+    required: true
+  },
   rating: {
     type: Number,
     required: true,
@@ -36,7 +40,7 @@ const placesSchema = new Schema({
     required: true,
   },
   createdBy: {
-    type: String,
+    type: Number,
     required: true,
   },
   createdAt: {
