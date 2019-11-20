@@ -36,7 +36,7 @@ const placesSchema = new Schema({
     required: false,
   },
   moderateBy: {
-    type: String,
+    type: Number,
     required: false,
   },
   isModerated: {

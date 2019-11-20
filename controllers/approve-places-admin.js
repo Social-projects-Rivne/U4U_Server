@@ -1,5 +1,7 @@
 const { places } = require('../models/places.model');
 const sequelize = require('../config/postgre');
+const { adminJwtConf } = require('../config/config');
+const jwt = require('jsonwebtoken'); 
 
 exports.getApprovePlaces = async (req, res) => {
     try {
@@ -32,7 +34,10 @@ exports.getApprovePlaces = async (req, res) => {
 exports.approvePlace = async (req, res) => {
     try {
         const { id } = await req.body;
-        await places.findByIdAndUpdate({ _id: id }, { isModerated: true });
+        const { authorization } = req.headers;
+        const { userId } = jwt.verify(authorization, adminJwtConf.secret);
+
+        await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId });
         res.send({ message: 'It was success' });
     } catch (error) {
         throw new Error(error);
