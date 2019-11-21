@@ -69,6 +69,10 @@ const getSearchPlace = (search) => {
   return  places.find({name: new RegExp(search, 'i')}) 
 };
 
+const approvePlace = async (id, userId) => {
+  await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId });
+}
+
 const addNewPlaceToDb = (newPlace, token,files) =>{
   const {isModerated, regionId, description, title} = newPlace;
   let photoPathArr = [];
@@ -88,7 +92,8 @@ const places = mongoose.model('places', placesSchema);
 module.exports = {
   places,
   getSearchPlace,
-  addNewPlaceToDb
+  addNewPlaceToDb,
+  approvePlace
 }
  
 

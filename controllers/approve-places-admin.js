@@ -1,4 +1,4 @@
-const { places } = require('../models/places.model');
+const { places, approvePlace } = require('../models/places.model');
 const sequelize = require('../config/postgre');
 const { adminJwtConf } = require('../config/config');
 const jwt = require('jsonwebtoken'); 
@@ -37,7 +37,8 @@ exports.approvePlace = async (req, res) => {
         const { authorization } = req.headers;
         const { userId } = jwt.verify(authorization, adminJwtConf.secret);
 
-        await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId });
+        await approvePlace(id, userId);
+        
         res.send({ message: 'It was success' });
     } catch (error) {
         throw new Error(error);
