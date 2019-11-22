@@ -14,6 +14,7 @@ const authRoutes = require('./routes/auth');
 const validRoutes = require('./routes/validation');
 const adminAuthRoutes = require('./routes/admin-auth');
 const wishList = require('./routes/wish-list');
+const reportsRoutes = require('./routes/reports');
 const reviewsRoutes = require('./routes/reviews');
 const searchRoutes = require('./routes/search');
 const checkRole = require('./routes/check-role-admin');
@@ -34,14 +35,13 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(bodyParser.json());
 
-
-
 // app.use('/', indexRouter);
 app.use('/api', authRoutes);
 app.use('/api', validRoutes);
 app.use('/api', apiRouter);
 app.use('/api', wishList);
 app.use('/api', reviewsRoutes);
+app.use('/api', reportsRoutes);
 app.use('/api', searchRoutes);
 app.use('/api', auth, userRoutes);
 
