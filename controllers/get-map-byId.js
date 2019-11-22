@@ -54,7 +54,7 @@ exports.getRegionByIdAndDistrictById = (req, res) => {
 };
 exports.getRegionByIdAndDistrictByIdPlaces = (req, res) => {
   const { RegionId, DistrictId } = req.params;
-  place.find({ regionId: RegionId, districtId: DistrictId })
+  places.find({ regionId: RegionId, districtId: DistrictId })
     .then((data) => {
       res.status(200).send(data);
     })
@@ -64,7 +64,7 @@ exports.getRegionByIdAndDistrictByIdPlaces = (req, res) => {
 };
 exports.getRegionByIdDistrictByIdPlaceById = (req, res) => {
   const { RegionId, DistrictId, PlaceId } = req.params;
-  place.find({ _id: PlaceId, districtId: DistrictId, regionId: RegionId })
+  places.find({ _id: PlaceId, districtId: DistrictId, regionId: RegionId })
     .then((data) => {
       res.status(200).send(data);
     })
