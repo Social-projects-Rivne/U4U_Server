@@ -58,8 +58,10 @@ exports.logOut = async (req, res) => {
 
 exports.register = async (req, res) => {
   try {
-    await userModel.create({ ...req.body, created_at: Date.now() });
-    res.status(201).json({ message: 'user has been created successful' });
+    const { id } = await userModel.create({ ...req.body, created_at: Date.now() });
+    const tokens = await tokenService.createTokens(id);
+
+    res.status(201).json({ message: 'user has been created successful', ...tokens });
   } catch (e) {
     res.status(500).send();
   }
