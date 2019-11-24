@@ -45,7 +45,7 @@ exports.getApprovedPlaces = async (req, res) => {
         })
 
         const users = await sequelize.query('SELECT email, id FROM users WHERE id IN ' + '(' + idOfUsers + ')');
-        const modetarors = await sequelize.query('SELECT email, id FROM users WHERE id IN ' + '(' + idOfModerators + ')');
+        const modetarors = await sequelize.query('SELECT email, id FROM moderators WHERE id IN ' + '(' + idOfModerators + ')');
 
         const result = [];
 
@@ -67,7 +67,38 @@ exports.getApprovedPlaces = async (req, res) => {
 }
 
 exports.getRejectedPlaces = async (req, res) => {
+    try {
 
+        const rejectedPlaces = await places.find({ isModerated: true, rejected: true });
+
+        const idOfUsers = rejectedPlaces.map((place) => {
+            return place.createdBy;
+        })
+
+        const idOfModerators = rejectedPlaces.map((place) => {
+            return place.moderateBy;
+        })
+
+        const users = await sequelize.query('SELECT email, id FROM users WHERE id IN ' + '(' + idOfUsers + ')');
+        const modetarors = await sequelize.query('SELECT email, id FROM moderators WHERE id IN ' + '(' + idOfModerators + ')');
+
+        const result = [];
+
+        rejectedPlaces.map((placeItem) => {
+            users[0].find((user) => {
+                modetarors[0].find((moderator) => {
+                    if(placeItem.createdBy === user.id && placeItem.moderateBy === moderator.id){
+                        result.push({ userEmail: user.email, description: placeItem.description, name: placeItem.name, id: placeItem._id, rejectReason: placeItem.rejectReason, moderateBy: moderator.email })
+                    }
+                })
+            })
+        })
+
+        res.status(200).send(result);    
+    } 
+    catch (error) {
+        res.status(404).send({ message: 'Not found' });  
+    }
 }
 
 exports.approvePlace = async (req, res) => {
