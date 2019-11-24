@@ -42,7 +42,19 @@ const placesSchema = new Schema({
   isModerated: {
     type: Boolean,
     required:true,
-  },  
+  },
+  approved: {
+    type: Boolean,
+    required: true
+  },
+  rejected: {
+    type: Boolean,
+    required: true
+  },
+  rejectReason: {
+    type: String,
+    required: false
+  },
   createdBy: {
     type: Number,
     required: true,
