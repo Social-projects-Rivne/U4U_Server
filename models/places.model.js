@@ -82,7 +82,7 @@ const getSearchPlace = (search) => {
 };
 
 const approvePlace = async (id, userId) => {
-  await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId });
+  await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId, approved: true,  rejected: false, rejectReason: ""});
 }
 
 const addNewPlaceToDb = (newPlace, token,files) =>{
