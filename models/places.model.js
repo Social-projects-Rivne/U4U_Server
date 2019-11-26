@@ -92,12 +92,15 @@ const addNewPlaceToDb = (newPlace, token,files) =>{
     photoPathArr.push(photoPath.path);
   }
   return  places.create({
-    isModerated,
+    isModerated: false,
     regionId,
     description,
     photos:photoPathArr,
     createdBy: token,
-    name: title
+    name: title,
+    approved: false,
+    rejected: false,
+    rejectReason: ''
   });
 }
 const places = mongoose.model('places', placesSchema);
