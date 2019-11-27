@@ -13,7 +13,7 @@ const placesSchema = new Schema({
   },
   ratingAvg: {
     type: Number,
-    required: true,
+    required: false,
   },
   photos: {
     type: Array,
@@ -21,34 +21,42 @@ const placesSchema = new Schema({
   },
   videos: {
     type: String,
-    required: true,
+    required: false,
+  },
+  isModerated: {
+    type: Boolean,
+    required: true
   },
   rating: {
     type: Number,
-    required: true,
+    required: false,
   },
   reviews: {
     type: Array,
-    required: true,
+    required: false,
   },
   moderateBy: {
-    type: String,
-    required: true,
+    type: Number,
+    required: false,
   },
+  isModerated: {
+    type: Boolean,
+    required:true,
+  },  
   createdBy: {
-    type: String,
+    type: Number,
     required: true,
   },
   createdAt: {
-    type: String,
-    required: true,
+    type: Date,
+    default: Date.now
   },
   updateAt: {
-    type: String,
-    required: true,
+    type: Date,
+    default: Date.now
   },
   regionId: {
-    type: mongoose.Schema.Types.ObjectId,
+    type: String,
     ref: "regions"
   },
   districtId: {
@@ -60,10 +68,32 @@ const placesSchema = new Schema({
 const getSearchPlace = (search) => {
   return  places.find({name: new RegExp(search, 'i')}) 
 };
+
+const approvePlace = async (id, userId) => {
+  await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId });
+}
+
+const addNewPlaceToDb = (newPlace, token,files) =>{
+  const {isModerated, regionId, description, title} = newPlace;
+  let photoPathArr = [];
+  for(let photoPath of files){
+    photoPathArr.push(photoPath.path);
+  }
+  return  places.create({
+    isModerated,
+    regionId,
+    description,
+    photos:photoPathArr,
+    createdBy: token,
+    name: title
+  });
+}
 const places = mongoose.model('places', placesSchema);
 module.exports = {
   places,
-  getSearchPlace
+  getSearchPlace,
+  addNewPlaceToDb,
+  approvePlace
 }
  
 
