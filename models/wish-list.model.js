@@ -3,30 +3,34 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const wishListSchema = new Schema({
-  userId:{
-      type: String,
-      required: true
+  userId: {
+    type: String,
+    required: true
   },
- comment:{ 
-      type: String,
-      required:true
+  placeId: {
+    type: String,    
+    required: true,
   },
-  todo:{
-      type: Boolean
+  placeName: {
+    type: String,
+    required: true
   },
-  inProgress:{
-      type: Boolean
+  todo: {
+    type: Boolean
   },
-  done:{
-      type: Boolean
+  inProgress: {
+    type: Boolean
   },
-  createdAt:{
-      type: Date,
-      default: Date.now
+  done: {
+    type: Boolean
   },
-  updatedAt:{
-      type: Date,
-      default: Date.now
+  createdAt: {
+    type: Date,
+    default: Date.now
+  },
+  updatedAt: {
+    type: Date,
+    default: Date.now
   }
 });
 
