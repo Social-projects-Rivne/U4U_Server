@@ -45,7 +45,6 @@ exports.editUserData = async (req, res) => {
       res.status(200).send(result.dataValues);
     });
   } catch (err) {
-    console.log(err)
     res.status(500).send({ message: 'Illegal data passed' });
   }
 };
