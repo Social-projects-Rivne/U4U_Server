@@ -41,9 +41,8 @@ exports.editUserData = async (req, res) => {
         toUpdate[key] = value;
       }
     }
-    user.update(toUpdate).then((result) => {
-      res.status(200).send(result.dataValues);
-    });
+    const result = await user.update(toUpdate);
+    res.status(200).send(result.dataValues);
   } catch (err) {
     res.status(500).send({ message: 'Illegal data passed' });
   }
