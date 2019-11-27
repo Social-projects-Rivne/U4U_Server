@@ -4,7 +4,7 @@ const { Schema } = mongoose;
 
 const wishListSchema = new Schema({
   userId:{
-      type: String,
+      type: Number,
       required: true
   },
  comment:{ 

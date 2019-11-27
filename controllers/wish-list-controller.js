@@ -5,8 +5,11 @@ const tokenService = new tokenservice(jwtConf);
 const { getSearchPlace } = require('../models/places.model');
 //const { getToken } = require('../utils/token')
 
-exports.wishListGet = (req, res) => {
-    wishList.find({})
+exports.wishListGet = async (req, res) => {
+    const userJwt = req.header('authorization');
+    const tokenSplit = userJwt.split(" ");
+    const decodedJWT = await tokenService.verify(tokenSplit[1]);
+    wishList.find({ userId: decodedJWT })
         .then((lists) => {
             res.status(200).send(lists);
         })
