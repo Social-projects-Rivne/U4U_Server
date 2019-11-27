@@ -13,7 +13,6 @@ exports.getAllUserData = async (req, res) => {
     if (!getUser) return res.status(500).send({ message: 'Can`t find user with this id' });
 
     const userData = getUser.dataValues;
-    console.log(userData);
     delete userData.password;
 
     return res.status(200).send(userData);
