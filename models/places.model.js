@@ -42,7 +42,19 @@ const placesSchema = new Schema({
   isModerated: {
     type: Boolean,
     required:true,
-  },  
+  },
+  approved: {
+    type: Boolean,
+    required: true
+  },
+  rejected: {
+    type: Boolean,
+    required: true
+  },
+  rejectReason: {
+    type: String,
+    required: false
+  },
   createdBy: {
     type: Number,
     required: true,
@@ -70,7 +82,7 @@ const getSearchPlace = (search) => {
 };
 
 const approvePlace = async (id, userId) => {
-  await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId });
+  await places.findByIdAndUpdate({ _id: id }, { isModerated: true, moderateBy: userId, approved: true,  rejected: false, rejectReason: ""});
 }
 
 const addNewPlaceToDb = (newPlace, token,files) =>{
@@ -80,12 +92,15 @@ const addNewPlaceToDb = (newPlace, token,files) =>{
     photoPathArr.push(photoPath.path);
   }
   return  places.create({
-    isModerated,
+    isModerated: false,
     regionId,
     description,
     photos:photoPathArr,
     createdBy: token,
-    name: title
+    name: title,
+    approved: false,
+    rejected: false,
+    rejectReason: ''
   });
 }
 const places = mongoose.model('places', placesSchema);
