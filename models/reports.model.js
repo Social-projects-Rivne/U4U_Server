@@ -9,10 +9,6 @@ const reportsModel = new Schema({
     type: String,
     required: true
   },
-  reviewId: {
-    type: String,
-    required: true
-  },
   comment: {
     type: String,
     required: true
@@ -23,15 +19,16 @@ const reportsModel = new Schema({
   },
   solvedData: {
     type: Date,
-    required: true
+    required: true,
+    default: Date.now
   },
   solvedBy: {
     type: String,
-    required: true
   },
   createdAt: {
     type: Date,
-    required: true
+    required: true,
+    default: Date.now
   }
 });
 
