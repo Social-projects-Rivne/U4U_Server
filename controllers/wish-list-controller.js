@@ -8,7 +8,6 @@ const { getSearchPlace } = require('../models/places.model');
 exports.wishListGet = async (req, res) => {
   try {
     const userJwt = req.header('authorization');
-    console.log(userJwt);
     const tokenSplit = userJwt.split(" ");
     const decodedJWT = await tokenService.verify(tokenSplit[1]);
     const lists = await wishList.find({ userId: decodedJWT });
