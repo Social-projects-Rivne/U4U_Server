@@ -5,22 +5,16 @@ const tokenService = new tokenservice(jwtConf);
 const { getSearchPlace } = require('../models/places.model');
 //const { getToken } = require('../utils/token')
 
-<<<<<<< HEAD
 exports.wishListGet = async (req, res) => {
-  const userJwt = req.header('authorization');
-  const tokenSplit = userJwt.split(" ");
-  const decodedJWT = await tokenService.verify(tokenSplit[1]);
-  // wishList.find({ userId: decodedJWT })
-  //     .then((lists) => {
-  //         res.status(200).send(lists);
-  //     })
-=======
-exports.wishListGet = (req, res) => {
-  wishList.find({})
-    .then((lists) => {
-      res.status(200).send(lists);
-    })
->>>>>>> 4ce93c0d77848ddc9de77f4809b852afbd5fbe0b
+  try {
+    const userJwt = req.header('authorization');
+    const tokenSplit = userJwt.split(" ");
+    const decodedJWT = await tokenService.verify(tokenSplit[1]);
+    const lists = await wishList.find({ userId: decodedJWT });
+    res.status(200).send(lists);
+  } catch (error) {
+    res.status(500).send({ message: e });
+  }
 }
 exports.wishListPost = async (req, res) => {
   try {
