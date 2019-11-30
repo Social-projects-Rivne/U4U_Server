@@ -25,7 +25,7 @@ const placesSchema = new Schema({
   },
   isModerated: {
     type: Boolean,
-    required: true
+    required: true,
   },
   rating: {
     type: Number,
@@ -39,21 +39,17 @@ const placesSchema = new Schema({
     type: Number,
     required: false,
   },
-  isModerated: {
-    type: Boolean,
-    required:true,
-  },
   approved: {
     type: Boolean,
-    required: true
+    required: true,
   },
   rejected: {
     type: Boolean,
-    required: true
+    required: true,
   },
   rejectReason: {
     type: String,
-    required: false
+    required: false,
   },
   createdBy: {
     type: Number,
@@ -61,21 +57,100 @@ const placesSchema = new Schema({
   },
   createdAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   updateAt: {
     type: Date,
-    default: Date.now
+    default: Date.now,
   },
   regionId: {
     type: String,
-    ref: "regions"
+    ref: 'regions',
   },
   districtId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "districts"
+    ref: 'districts',
   },
 });
+
+const getPlacesWithLocation = (match, aggregation) => {
+  const placesAggregation = [
+    {
+      $match: match,
+    },
+    {
+      $addFields: {
+        regionIdObj: {
+          $toObjectId: '$regionId',
+        },
+      },
+    },
+    {
+      $addFields: {
+        regionIdObj: {
+          $toObjectId: '$regionId',
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'regions',
+        localField: 'regionIdObj',
+        foreignField: '_id',
+        as: 'region',
+      },
+    },
+    {
+      $unwind: {
+        path: '$region',
+      },
+    },
+    {
+      $addFields: {
+        districtIdObj: {
+          $toObjectId: '$districtId',
+        },
+      },
+    },
+    {
+      $lookup: {
+        from: 'districts',
+        localField: 'districtIdObj',
+        foreignField: '_id',
+        as: 'district',
+      },
+    },
+    {
+      $unwind: {
+        path: '$district',
+      },
+    },
+    {
+      $addFields: {
+        location: {
+          region: '$region.name',
+          district: '$district.name',
+        },
+      },
+    },
+    {
+      $project: {
+        regionIdObj: false,
+        districtIdObj: false,
+        region: false,
+        district: false,
+      },
+    },
+  ];
+
+  if (aggregation && aggregation.length) {
+    for (let i = 0; i < aggregation.length; i++) {
+      placesAggregation.push(aggregation[i]);
+    }
+  }
+
+  return places.aggregate(placesAggregation);
+};
 
 const getSearchPlace = (search) => {
   return  places.find({name: new RegExp(search, 'i')}) 
@@ -108,8 +183,6 @@ module.exports = {
   places,
   getSearchPlace,
   addNewPlaceToDb,
-  approvePlace
-}
- 
-
-
+  approvePlace,
+  getPlacesWithLocation,
+};
