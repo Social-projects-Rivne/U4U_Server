@@ -1,5 +1,7 @@
 const multer = require('multer');
 
+// take images from request with multer
+
 const storage = multer.diskStorage({
   destination(req, file, cb) {
     cb(null, './uploads/');
@@ -27,5 +29,5 @@ const upload = multer({
   fileFilter,
 });
 
-
 module.exports = upload;
+
