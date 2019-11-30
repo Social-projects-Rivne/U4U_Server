@@ -23,6 +23,8 @@ const getAllUsers = require('./routes/admin-getAllUsers');
 const businesUsers = require('./routes/admin-api-business');
 const adminReviews = require('./routes/admin-api-reviews');
 const adminApi = require('./routes/admin-api');
+const approvePlaces = require('./routes/admin-approve-places');
+const rejectPlaces = require('./routes/admin-api-reject');
 
 const auth = require('./middlewares/auth');
 const adminAuth = require('./middlewares/admin-auth');
@@ -56,6 +58,8 @@ app.use('/admin/api', adminAuth, businesUsers);
 app.use('/admin', adminAuth, checkRole);
 app.use('/admin/api', adminAuth, adminReviews);
 app.use('/admin/api', adminAuth, getAllUsers);
+app.use('/admin/api', adminAuth, approvePlaces);
+app.use('/admin/api', adminAuth, rejectPlaces);
 
 app.use('/admin/api', adminAuth, adminApi);
 
