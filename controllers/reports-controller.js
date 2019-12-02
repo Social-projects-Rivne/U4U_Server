@@ -37,27 +37,11 @@ exports.postReport = async (req, res) => {
     console.log(userId);
 
     await reportsModel.create({
-      // comment: report,
-      // placeId: placeId,
-      // createdBy: userId,
       placeId: placeId,
       userId: userId,
       comment: report,
       isSolved: false,
     });
-
-    // reportsModel
-    //   .aggregate([])
-    //   .match({ _id: placeId })
-    //   .then(data => {
-    //     const { _id: plsId } = data[0];
-    //     placeModel.places.updateOne({ _id: plsId }).then(data => {
-    //       res.status(200);
-    //     });
-    //   })
-    //   .catch(err => {
-    //     console.log(err);
-    //   });
 
     await res.status(200).send({ message: 'Thanks, we added your report' });
   } catch (e) {
