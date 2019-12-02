@@ -3,9 +3,9 @@ const mongoose = require('mongoose');
 const { Schema } = mongoose;
 
 const wishListSchema = new Schema({
-  userId: {
-    type: String,
-    required: true
+  userId:{
+      type: Number,
+      required: true
   },
   placeId: {
     type: String,    
