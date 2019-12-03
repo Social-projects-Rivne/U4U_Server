@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const moderatorModel = require('../models/moderator.model');
+const { Moderator } = require('../models/moderator.model');
 const adminTokenModel = require('../models/admin-token.model');
 const { adminJwtConf } = require('../config/config');
 
@@ -15,7 +15,7 @@ exports.login = async (req, res) => {
   }
 
   try {
-    const user = await moderatorModel.findOne({ where: { email, password } });
+    const user = await Moderator.findOne({ where: { email, password } });
 
     const refteshTokenPayload = {
       userId: user.dataValues.id,

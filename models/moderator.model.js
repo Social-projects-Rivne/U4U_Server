@@ -65,4 +65,13 @@ const Moderator = sequelize.define('moderators', {
   timestamps: false,
 });
 
-module.exports = Moderator;
+const findModerator = async (moderatorId) => {
+  return await Moderator.findAll({where: {id: moderatorId}});
+}
+
+
+
+module.exports = {
+  Moderator,
+  findModerator
+}
