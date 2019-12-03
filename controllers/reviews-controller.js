@@ -78,6 +78,10 @@ exports.getReviewById = async (req, res) => {
     const { reviewId } = req.params;
     const reviewById = await reviewsModel.find({ placeId: reviewId });
 
+    if (!reviewById.length) {
+      res.status(200).send(reviewById);
+    }
+
     const usersId = reviewById.map((item) => {
       return item.createdBy;
     })
