@@ -65,4 +65,8 @@ const Moderator = sequelize.define('moderators', {
   timestamps: false,
 });
 
-module.exports = Moderator;
+
+
+module.exports = {
+  Moderator
+}
