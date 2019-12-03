@@ -34,7 +34,6 @@ exports.postReport = async (req, res) => {
     }
 
     const userId = await tokenService.verify(userJwt);
-    console.log(userId);
 
     await reportsModel.create({
       placeId: placeId,
