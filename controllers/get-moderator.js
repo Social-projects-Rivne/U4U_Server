@@ -1,4 +1,4 @@
-const { Moderator } = require('../models/moderator.model');
+const { findModerator } = require('../models/moderator.model');
 const { adminJwtConf } = require('../config/config');
 const jwt = require('jsonwebtoken');
 
@@ -6,7 +6,7 @@ exports.getModerator = async (req, res) => {
     try {
         const accessToken = req.header('Authorization');
         const { userId } = await jwt.verify(accessToken, adminJwtConf.secret);
-        const moderator = await Moderator.findAll({where: {id: userId}});
+        const moderator = await findModerator(userId);
         const { nickname, avatar } = moderator[0].dataValues;
         res.status(200).send({ nickname: nickname, avatar: avatar });
     } catch (error) {
