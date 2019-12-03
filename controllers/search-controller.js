@@ -1,4 +1,4 @@
-const {places} = require('../models/places.model');
+const { places, getPlacesWithLocation } = require('../models/places.model');
 
 exports.getSearchData = (req, res) => {
   places
@@ -25,22 +25,32 @@ exports.getSearchData = (req, res) => {
 };
 
 exports.getSearchStar = (req, res) => {
-  places
-    .aggregate([
-      {
-        $sort: { ratingAvg: -1 },
+  getPlacesWithLocation({}, [
+    {
+      $match: {
+        approved: true,
+        isModerated: true,
+        rejected: false,
       },
-      {
-        $limit: 5,
+    },
+    {
+      $sort: { ratingAvg: -1 },
+    },
+    {
+      $limit: 8,
+    },
+    {
+      $project: {
+        _id: 1,
+        ratingAvg: 1,
+        name: 1,
+        photos: 1,
+        isModerated: 1,
+        approved: 1,
+        location: 1,
       },
-      {
-        $project: {
-          _id: 1,
-          ratingAvg: 1,
-          name: 1,
-        },
-      },
-    ])
+    },
+  ])
     .then((data) => {
       res.status(200).send(data);
     })
@@ -53,12 +63,20 @@ exports.getRandomPlace = (req, res) => {
   places
     .aggregate([
       {
-        $sample: { size: 1 }
+        $match: {
+          approved: true,
+          isModerated: true,
+          rejected: false,
+        },
+      },
+      {
+        $sample: { size: 1 },
       },
       {
         $project: {
-          _id: 0,
-          id: '$_id'
+          _id: '$_id',
+          isModerated: 1,
+          approved: 1,
         },
       },
     ])
