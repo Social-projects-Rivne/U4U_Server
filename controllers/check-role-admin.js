@@ -1,4 +1,4 @@
-const moderators = require('../models/moderator.model');
+const { Moderator } = require('../models/moderator.model');
 const jwt = require('jsonwebtoken');
 const { adminJwtConf } = require('../config/config');
 
@@ -7,7 +7,7 @@ exports.checkRole = async (req, res) => {
     if(accessToken){
         try {
             const { userId } = jwt.verify(accessToken, adminJwtConf.secret);
-            const user = await moderators.findOne({where: { id: userId } });
+            const user = await Moderator.findOne({where: { id: userId } });
             res.status(200).send({ admin: user.is_admin });
         }
         catch (error) {
