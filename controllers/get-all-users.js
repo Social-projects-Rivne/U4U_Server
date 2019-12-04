@@ -1,7 +1,11 @@
 const user = require('../models/user.model');
 
 exports.getAllUsers = (req, res) => {
-  user.findAll({})
+  user.findAll({
+    order: [
+      ["id", "ASC"]
+    ]
+  })
     .then((data) => {
       res.status(200).send(data);
     })

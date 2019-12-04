@@ -45,6 +45,28 @@ const Ban = sequelize.define('bans', {
   },
 }, {
   timestamps: false,
-});
+}); 
+const userBlocking = async (body,adminId) => {
+Ban.create({
+  user_id:body.id,
+  banned_by:adminId,
+  ban_start:body.ban_start,
+  reason:body.reason
+})
+};
+const userUnblocking = async (body,adminId) => {
+  Ban.destroy({
+    where: {
+      user_id: body.id,
+    }
+  }).then((res) => {
+    console.log(res);
+  });
+};
 
-module.exports = Ban;
+module.exports = {
+  Ban,
+  userBlocking,
+  userUnblocking
+  
+}
