@@ -2,7 +2,7 @@ const regions = require('../models/region.model');
 const districts = require('../models/districts.model');
 const tokenservice = require('../services/token-service');
 const { jwtConf } = require('../config/config');
-const { places, addNewPlaceToDb } = require('../models/places.model');
+const { addNewPlaceToDb, getPlacesWithLocation } = require('../models/places.model');
 const tokenService = new tokenservice(jwtConf); 
 
 exports.getAllRegions = (req, res) => {
@@ -24,7 +24,7 @@ exports.getAllDistricts = (req, res) => {
     });
 };
 exports.getAllPlaces = (req, res) => {
-  places.find({})
+  getPlacesWithLocation({})
     .then((data) => {
       res.status(200).send(data);
     })

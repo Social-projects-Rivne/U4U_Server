@@ -1,6 +1,9 @@
+const mongoose = require('mongoose');
 const regions = require('../models/region.model');
 const district = require('../models/districts.model');
-const {places} = require('../models/places.model');
+
+const { places, getPlacesWithLocation } = require('../models/places.model');
+
 
 exports.getRegionById = (req, res) => {
   const { RegionId } = req.params;
@@ -24,9 +27,9 @@ exports.getDistrictById = (req, res) => {
 };
 exports.getPlaceById = (req, res) => {
   const { PlaceId } = req.params;
-  places.findById(PlaceId)
+  getPlacesWithLocation({ _id: mongoose.Types.ObjectId(PlaceId) })
     .then((data) => {
-      res.status(200).send(data);
+      res.status(200).send(data[0]);
     })
     .catch(() => {
       res.status(404).send({ message: 'Not Found' });
@@ -74,7 +77,7 @@ exports.getRegionByIdDistrictByIdPlaceById = (req, res) => {
 };
 exports.getAllPlacesByRegionId = (req, res) => {
   const { RegionId } = req.params;
-  places.find({ regionId: RegionId })
+  getPlacesWithLocation({ regionId: RegionId })
     .then((data) => {
       res.send(data);
     })
