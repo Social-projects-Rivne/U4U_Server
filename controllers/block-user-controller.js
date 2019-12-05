@@ -12,16 +12,5 @@ exports.blockUser = async (req, res) => {
 };
 
 exports.unblockUser = async (req, res) => {
-    try {
-        const {authorization} = req.headers;
-        const { userId } = jwt.verify(authorization, adminJwtConf.secret);
-        await userUnblocking(req.body, userId)
-        await res.status(200).send({
-            message: 'The user is unblocked'
-        });
-    }
-    catch (e) {
-        console.error(e)
-        res.status(500).send({ message: e });
-    }
+        await userUnblocking(req.body,res)
 };

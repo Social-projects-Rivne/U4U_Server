@@ -48,14 +48,14 @@ const Ban = sequelize.define('bans', {
 }); 
 const userBlocking = async (body,adminId,res) => {
   try{
-const mongoResponse = await Ban.create({
+const postgreResponse = await Ban.create({
   user_id:body.id,
   banned_by:adminId,
   ban_start:body.ban_start,
   reason:body.reason
 })
  await res.status(200).send({
-  id: mongoResponse.user_id,         
+  id:  postgreResponse.user_id,         
   message: 'The user is blocked'
 });
   }
@@ -63,14 +63,21 @@ const mongoResponse = await Ban.create({
     res.status(500).send({ message: e });
 }
 };
-const userUnblocking = async (body) => {
-  Ban.destroy({
+const userUnblocking = async (body,res) => {
+  try{
+    Ban.destroy({
     where: {
       user_id: body.id,
     }
-  }).then((res) => {
-    console.log(res);
-  }).catch(console.error);
+  })
+  await res.status(200).send({       
+    message: 'The user is unblocked',
+    id:body.id
+  });
+}
+catch (e) {
+  res.status(500).send({ message: e });
+}
 };
 
 module.exports = {
