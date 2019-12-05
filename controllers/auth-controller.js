@@ -3,6 +3,7 @@ const TokenService = require('../services/token-service');
 const userModel = require('../models/user.model');
 const tokenModel = require('../models/token.model');
 const { jwtConf } = require('../config/config');
+const sequelize = require('../config/postgre');
 
 const tokenService = new TokenService(jwtConf);
 
@@ -11,12 +12,17 @@ exports.login = async (req, res) => {
 
   try {
     const user = await userModel.findOne({ where: { email, password } });
+    console.log(user)
     if (!user) throw '';
-
-    const tokens = await tokenService.createTokens(user.dataValues.id);
+    const userStatus = await sequelize.query(
+      `SELECT user_id FROM bans WHERE user_id=${user.id}`)
+    const checkUserStatus = (()=>{
+    return userStatus[0][0]? true:false;
+    })();
+      const tokens = await tokenService.createTokens(user.dataValues.id);
 
     // send tokens to the client
-    res.status(200).json(tokens);
+    res.status(200).json([tokens,checkUserStatus]);
   } catch (err) {
     if (err) throw err;
     res.status(401).json({ err: 'Wrong password or email' });
