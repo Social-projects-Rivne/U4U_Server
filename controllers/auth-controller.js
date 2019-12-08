@@ -12,7 +12,6 @@ exports.login = async (req, res) => {
 
   try {
     const user = await userModel.findOne({ where: { email, password } });
-    console.log(user)
     if (!user) throw '';
     const userStatus = await sequelize.query(
       `SELECT user_id FROM bans WHERE user_id=${user.id}`)
