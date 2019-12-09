@@ -19,7 +19,7 @@ exports.getApprovePlaces = async (req, res) => {
         allPlaces.map((placeItem) => {
             users[0].find((user) => {
                 if(placeItem.createdBy === user.id){
-                    result.push({ userEmail: user.email, description: placeItem.description, name: placeItem.name, id: placeItem._id, createdAt: placeItem.createdAt })
+                    result.push({ userEmail: user.email, name: placeItem.name, id: placeItem._id, createdAt: placeItem.createdAt })
                 }
             })
         })
@@ -53,7 +53,7 @@ exports.getApprovedPlaces = async (req, res) => {
             users[0].find((user) => {
                 modetarors[0].find((moderator) => {
                     if(placeItem.createdBy === user.id && placeItem.moderateBy === moderator.id){
-                        result.push({ userEmail: user.email, description: placeItem.description, name: placeItem.name, id: placeItem._id, createdAt: placeItem.createdAt, moderateBy: moderator.email })
+                        result.push({ userEmail: user.email, name: placeItem.name, id: placeItem._id, createdAt: placeItem.createdAt, moderateBy: moderator.email })
                     }
                 })
             })
@@ -88,7 +88,7 @@ exports.getRejectedPlaces = async (req, res) => {
             users[0].find((user) => {
                 modetarors[0].find((moderator) => {
                     if(placeItem.createdBy === user.id && placeItem.moderateBy === moderator.id){
-                        result.push({ userEmail: user.email, description: placeItem.description, name: placeItem.name, id: placeItem._id, rejectReason: placeItem.rejectReason, moderateBy: moderator.email })
+                        result.push({ userEmail: user.email, name: placeItem.name, id: placeItem._id, rejectReason: placeItem.rejectReason, moderateBy: moderator.email })
                     }
                 })
             })
