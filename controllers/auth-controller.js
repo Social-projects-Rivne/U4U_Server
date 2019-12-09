@@ -3,6 +3,7 @@ const TokenService = require("../services/token-service");
 const userModel = require("../models/user.model");
 const tokenModel = require("../models/token.model");
 const { jwtConf } = require("../config/config");
+const sequelize = require('../config/postgre');
 const bcrypt = require("bcrypt");
 const saltRounds = 10;
 
@@ -15,11 +16,16 @@ exports.login = async (req, res) => {
     const user = await userModel.findOne({ where: { email } });
     const match = await bcrypt.compare(password, user.password);
     if (!user) throw "";
+    const userStatus = await sequelize.query(
+      `SELECT user_id FROM bans WHERE user_id=${user.id}`)
+    const checkUserStatus = (()=>{
+    return userStatus[0][0]? true:false;
+    })();
     if (match) {
       const tokens = await tokenService.createTokens(user.dataValues.id);
 
       // send tokens to the client
-      res.status(200).json(tokens);
+      res.status(200).json([tokens,checkUserStatus]);
     } else throw "";
   } catch (err) {
     if (err) throw err;
