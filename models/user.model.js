@@ -1,7 +1,7 @@
 const Sequelize = require('sequelize');
 const sequelize = require('../config/postgre');
 
-const Ban = require('../models/ban.model');
+const  { Ban } = require('../models/ban.model');
 const Business = require('../models/business.model');
 const Token = require('../models/token.model');
 

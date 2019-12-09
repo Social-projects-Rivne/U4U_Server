@@ -153,7 +153,7 @@ const getPlacesWithLocation = (match, aggregation) => {
 };
 
 const getSearchPlace = (search) => {
-  return  places.find({name: new RegExp(search, 'i')}) 
+  return  places.find({name: new RegExp(search, 'i'), isModerated:true}) 
 };
 
 const approvePlace = async (id, userId) => {
