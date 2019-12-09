@@ -4,7 +4,7 @@ const userModel = require("../models/user.model");
 const tokenModel = require("../models/token.model");
 const { jwtConf } = require("../config/config");
 const sequelize = require('../config/postgre');
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const saltRounds = 10;
 
 const tokenService = new TokenService(jwtConf);
