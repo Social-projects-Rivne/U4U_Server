@@ -1,4 +1,4 @@
-const Ban = require('../models/ban.model');
+const { Ban } = require('../models/ban.model');
 
 exports.getAllUsers = (req, res) => {
     Ban.findAll({})
