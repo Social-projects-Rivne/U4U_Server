@@ -53,7 +53,7 @@ exports.getApprovedPlaces = async (req, res) => {
             users[0].find((user) => {
                 modetarors[0].find((moderator) => {
                     if(placeItem.createdBy === user.id && placeItem.moderateBy === moderator.id){
-                        result.push({ userEmail: user.email, name: placeItem.name, id: placeItem._id, createdAt: placeItem.createdAt, moderateBy: moderator.email })
+                        result.push({ userEmail: user.email, name: placeItem.name, id: placeItem._id, createdAt: placeItem.createdAt, moderateBy: moderator.email, updateAt: placeItem.updateAt })
                     }
                 })
             })
@@ -88,7 +88,7 @@ exports.getRejectedPlaces = async (req, res) => {
             users[0].find((user) => {
                 modetarors[0].find((moderator) => {
                     if(placeItem.createdBy === user.id && placeItem.moderateBy === moderator.id){
-                        result.push({ userEmail: user.email, name: placeItem.name, id: placeItem._id, rejectReason: placeItem.rejectReason, moderateBy: moderator.email })
+                        result.push({ userEmail: user.email, name: placeItem.name, id: placeItem._id, rejectReason: placeItem.rejectReason, moderateBy: moderator.email, createdAt: placeItem.createdAt })
                     }
                 })
             })
