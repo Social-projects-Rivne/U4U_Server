@@ -161,14 +161,15 @@ const approvePlace = async (id, userId) => {
 }
 
 const addNewPlaceToDb = (newPlace, token,files) =>{
-  const {isModerated, regionId, description, title} = newPlace;
+  const {isModerated, regionId, description, title, districtId} = newPlace;
   let photoPathArr = [];
   for(let photoPath of files){
     photoPathArr.push(photoPath.path);
   }
   return  places.create({
-    isModerated: false,
+    isModerated,
     regionId,
+    districtId,
     description,
     photos:photoPathArr,
     createdBy: token,
