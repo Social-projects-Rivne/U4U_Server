@@ -32,4 +32,13 @@ const reportsModel = new Schema({
   }
 });
 
-module.exports = model("reports", reportsModel);
+const reportModel = model("reports", reportsModel);
+
+const getAllReports = async () => {
+  return await reportModel.find({});
+}
+
+module.exports = {
+  reportModel,
+  getAllReports
+}
