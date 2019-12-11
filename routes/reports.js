@@ -7,4 +7,5 @@ const { reportPost } = require('../validation/report-validation');
 const { postReport } = require('../controllers/reports-controller');
 
 router.post('/reports', valid(reportPost), postReport);
+
 module.exports = router;
