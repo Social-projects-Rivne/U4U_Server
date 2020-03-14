@@ -27,7 +27,7 @@
     "sequelize": "^5.19.0"
   },
   "devDependencies": {
-    "acorn": "^7.1.0",
+    "acorn": "^7.1.1",
     "eslint": "^6.5.1",
     "eslint-config-airbnb-base": "^14.0.0",
     "eslint-plugin-import": "^2.18.2"
